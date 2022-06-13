@@ -1,16 +1,11 @@
 # fooddelivery
 
-A new Flutter project.
+A Flutter food delivery app working without database.
 
-## Getting Started
+Just created to learn the Ui and the widgets.
 
-This project is a starting point for a Flutter application.
+The project contains listview builder with data passing through which list is clicked!
 
-A few resources to get you started if this is your first Flutter project:
+Cart is provided with total price showing!
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Users can remove products or add items to the cart.

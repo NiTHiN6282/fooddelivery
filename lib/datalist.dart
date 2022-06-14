@@ -22,25 +22,29 @@ List<Map<String, dynamic>> favoriteList = [
     "img": "assets/burger.jpg",
     "name": "Burger",
     "description": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-    "price": 120
+    "price": 120,
+    "fav":false
   },
   {
     "img": "assets/pizza.png",
     "name": "Pizza",
     "description": "Tasty gffffffffffffffffffffffffffffffffffffffffffff",
-    "price": 150
+    "price": 150,
+    "fav":false
   },
   {
     "img": "assets/pasta.png",
     "name": "Pasta",
     "description": "Fresh Vegetables gfffffffffffffffffffffffffffffffffff",
-    "price": 80
+    "price": 80,
+    "fav":false
   },
   {
     "img": "assets/hamburger.png",
     "name": "Hamburger",
     "description": "Yummy trrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
-    "price": 300
+    "price": 300,
+    "fav":false
   },
 ];
 
@@ -98,3 +102,5 @@ List<Map<String, dynamic>> foodList = [
 List<Map<String, dynamic>> cartList=[];
 
 List<Map<String, dynamic>> undoList=[];
+
+List<Map<String, dynamic>> wishList=[];

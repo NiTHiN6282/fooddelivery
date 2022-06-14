@@ -12,12 +12,14 @@ class FoodFavoriteUi extends StatefulWidget {
   var img;
   var description;
   var price;
+  var indexvar;
 
   FoodFavoriteUi({Key? key,
     this.name,
     this.img,
     this.description,
-    this.price
+    this.price,
+    this.indexvar
   }) : super(key: key);
 
   @override
@@ -27,11 +29,14 @@ class FoodFavoriteUi extends StatefulWidget {
 class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
   int count = 1;
   var newprice;
+  var favicon=false;
+  var wishindex;
 
   @override
   Widget build(BuildContext context) {
     var scrwidth = MediaQuery.of(context).size.width;
     var scrheight = MediaQuery.of(context).size.height;
+    print(scrheight);
     var totalprice=widget.price;
     if(newprice==null){
       setState((){
@@ -45,7 +50,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
         backgroundColor: Colors.grey,
         leading: InkWell(
             onTap: (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => FoodHomeUi(),));
+              Navigator.pop(context);
             },
             child: Icon(Icons.arrow_back_rounded)),
         actions: [
@@ -94,8 +99,55 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                   child: Container(
                     width: scrwidth,
                     child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
+                      // mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.all(20),
+                              child: InkWell(
+                                onTap: (){
+                                  if(favoriteList[widget.indexvar]['fav']==false){
+                                    favoriteList[widget.indexvar]['fav']=true;
+                                    wishList.add({
+                                      "img":widget.img,
+                                      "name":widget.name,
+                                      "price":widget.price
+                                    });
+                                  }else{
+                                    favoriteList[widget.indexvar]['fav']=false;
+                                    for(int i=0; i<wishList.length;i++){
+                                      if(wishList[i]['name']==widget.name){
+                                        // wishList
+                                        wishindex=i;
+                                        setState((){});
+                                      }
+                                    }
+                                    wishList.removeAt(wishindex);
+                                  }
+
+
+
+                                  print(wishList);
+
+                                  setState((){});
+                                },
+                                child: favoriteList[widget.indexvar]['fav']==false?
+                                Icon(
+                                  Icons.favorite_border,
+                                  color: Colors.red,
+                                  size: 30,
+                                ):
+                                Icon(
+                                  Icons.favorite,
+                                  color: Colors.red,
+                                  size: 30,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                         Image.asset(
                           widget.img,
                           width: scrheight*0.16,
@@ -282,7 +334,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                                     print("index"+findindex.toString());
                                     if(findindex>=0){
                                       setState((){
-                                        cartList[findindex]['quantity']=cartList[findindex]['quantity']+count;
+                                        cartList[findindex]['quantity']=count;
                                       });
                                     }else{
                                       cartList.add({

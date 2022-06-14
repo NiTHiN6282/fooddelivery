@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodcartui.dart';
+import 'package:fooddelivery/wishlist.dart';
 
 import 'datalist.dart';
 import 'foodfavoriteui.dart';
@@ -194,8 +195,9 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                           name: favoriteList[index]["name"],
                                           description: favoriteList[index]["description"],
                                           price: favoriteList[index]["price"],
+                                          indexvar: index,
                                         ),
-                                      ));
+                                      )).then((value) => setState((){}));
                                 },
                                 child: Container(
                                   padding: EdgeInsets.only(top: scrheight*0.0147, right: scrheight*0.022),

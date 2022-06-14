@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodhomeui.dart';
+import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/loginpage.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: FoodHomeUi(),
+      home: LandingPage(),
     );
   }
 }

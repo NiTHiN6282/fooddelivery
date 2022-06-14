@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/userregistration.dart';
 
 import 'foodhomeui.dart';
@@ -116,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                                   ),
                                   validator: (value) {
                                     RegExp regex =
-                                    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
+                                    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
                                     if (value!.isEmpty) {
                                       return 'Please enter password';
                                     } else if(value.length<6){
@@ -151,7 +152,10 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onPressed: () {
                             if(_loginkey.currentState!.validate()){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => FoodHomeUi(),));
+                              print(emailinputcontroller.value.text);
+                              if(emailinputcontroller.value.text=="n@gmail.com"&&passwordinputcontroller.value.text=="Aa123!"){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => LandingPage(),));
+                              }
                             }
                           },
                           child: Text('Login'),

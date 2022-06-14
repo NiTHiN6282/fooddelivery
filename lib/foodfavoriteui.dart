@@ -1,5 +1,7 @@
 
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/snackbar.dart';
 
 import 'datalist.dart';
@@ -41,6 +43,35 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
       appBar: AppBar(
         toolbarHeight: scrheight*.07,
         backgroundColor: Colors.grey,
+        leading: InkWell(
+            onTap: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context) => FoodHomeUi(),));
+            },
+            child: Icon(Icons.arrow_back_rounded)),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
+                },
+                child: Badge(
+                  badgeColor: Colors.black,
+                  badgeContent: Text(cartList.length.toString(),
+                    style: TextStyle(
+                        color: Colors.white
+                    ),),
+                  child: Icon(
+                    Icons.shopping_cart,
+                    size: scrheight*0.0352,
+                  ),
+                )
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          )
+        ],
       ),
       body: SafeArea(
         child: Stack(
@@ -250,7 +281,6 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                                     final findindex = cartList.indexWhere((element) => element["name"] == widget.name);
                                     print("index"+findindex.toString());
                                     if(findindex>=0){
-                                      print("ennada");
                                       setState((){
                                         cartList[findindex]['quantity']=cartList[findindex]['quantity']+count;
                                       });
@@ -264,7 +294,8 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                                     }
                                     print(cartList);
                                     CustomSnackBar.customSnackbar(context, 2,"${count} "+widget.name+" Added to cart");
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
+                                    setState((){});
+                                    // Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
                                   },
                                   child: Container(
                                     width: scrwidth/2.51,

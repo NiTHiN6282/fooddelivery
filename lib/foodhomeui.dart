@@ -1,3 +1,4 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodcartui.dart';
 
@@ -63,8 +64,18 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                 onTap: (){
                                   Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
                                 },
-                                child: Icon(Icons.shopping_cart,
-                                size: scrheight*0.0352,))
+                                child: Badge(
+                                  badgeColor: Colors.grey,
+                                  badgeContent: Text(cartList.length.toString(),
+                                  style: TextStyle(
+                                    color: Colors.white
+                                  ),),
+                                  child: Icon(
+                                    Icons.shopping_cart,
+                                    size: scrheight*0.0352,
+                                  ),
+                                )
+                            )
                           ],
                         ),
                       ),

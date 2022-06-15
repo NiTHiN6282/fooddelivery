@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/loginpage.dart';
+import 'package:fooddelivery/splashscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
-      home: LandingPage(),
+      home: SplashScreen(),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/userregistration.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'foodhomeui.dart';
 
@@ -150,11 +151,15 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(32.0)),
                             minimumSize: Size(300, 40), //////// HERE
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if(_loginkey.currentState!.validate()){
                               print(emailinputcontroller.value.text);
                               if(emailinputcontroller.value.text=="n@gmail.com"&&passwordinputcontroller.value.text=="Aa123!"){
+
+                                final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                                sharedPreferences.setString('email', emailinputcontroller.value.text);
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => LandingPage(),));
+
                               }
                             }
                           },

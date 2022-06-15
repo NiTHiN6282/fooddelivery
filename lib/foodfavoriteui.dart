@@ -34,6 +34,15 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
 
   @override
   Widget build(BuildContext context) {
+
+    for(int i=0; i<wishList.length;i++){
+      if(wishList[i]['name']==widget.name){
+        // wishList
+        favicon=true;
+        setState((){});
+      }
+    }
+
     var scrwidth = MediaQuery.of(context).size.width;
     var scrheight = MediaQuery.of(context).size.height;
     print(scrheight);
@@ -108,15 +117,15 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                               padding: EdgeInsets.all(20),
                               child: InkWell(
                                 onTap: (){
-                                  if(favoriteList[widget.indexvar]['fav']==false){
-                                    favoriteList[widget.indexvar]['fav']=true;
+                                  if(favicon==false){
+                                    favicon=true;
                                     wishList.add({
                                       "img":widget.img,
                                       "name":widget.name,
                                       "price":widget.price
                                     });
                                   }else{
-                                    favoriteList[widget.indexvar]['fav']=false;
+                                    favicon=false;
                                     for(int i=0; i<wishList.length;i++){
                                       if(wishList[i]['name']==widget.name){
                                         // wishList
@@ -133,7 +142,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
 
                                   setState((){});
                                 },
-                                child: favoriteList[widget.indexvar]['fav']==false?
+                                child: favicon==false?
                                 Icon(
                                   Icons.favorite_border,
                                   color: Colors.red,

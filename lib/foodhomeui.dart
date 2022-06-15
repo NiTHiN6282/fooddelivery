@@ -336,7 +336,8 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                           wishList.add({
                                                             "img":favoriteList[index]["img"],
                                                             "name":favoriteList[index]["name"],
-                                                            "price":favoriteList[index]["price"]
+                                                            "price":favoriteList[index]["price"],
+                                                            "description":favoriteList[index]['description']
                                                           });
                                                         }else{
                                                           favicon=false;

@@ -122,6 +122,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                                     wishList.add({
                                       "img":widget.img,
                                       "name":widget.name,
+                                      "description":widget.description,
                                       "price":widget.price
                                     });
                                   }else{

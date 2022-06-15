@@ -15,6 +15,8 @@ List<Map<String, dynamic>> tabList = [
 
 Map<String, dynamic> personalDetails = {
   "name": "Gavriel",
+  "img": "assets/person.png",
+  "email": "gavriel@gmail.com"
 };
 
 List<Map<String, dynamic>> favoriteList = [

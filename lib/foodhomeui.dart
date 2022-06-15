@@ -1,6 +1,7 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodcartui.dart';
+import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/wishlist.dart';
 
 import 'datalist.dart';
@@ -27,65 +28,112 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
+        drawer: Drawer(
+          child: ListView(
+            children: [
+              DrawerHeader(
+                decoration: BoxDecoration(
+                  color: Colors.blue
+                ),
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            CircleAvatar(
+                              radius: 30,
+                              child: Image.asset(personalDetails['img']),
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Text(personalDetails['name'],
+                            style:
+                              TextStyle(
+                                fontSize: 18
+                              ),),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Text(personalDetails['email'],
+                              style:
+                              TextStyle(
+                                  fontSize: 13
+                              ),)
+                          ],
+                        ),
+                        InkWell(
+                            onTap: (){
+                              Navigator.pop(context);
+                            },
+                            child: Icon(Icons.cancel_outlined))
+                      ],
+                    ),
+                  )
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: Colors.white,
+          leading: Builder(
+            builder: (context) {
+              return InkWell(
+                onTap: (){
+                  Scaffold.of(context).openDrawer();
+                },
+                child: Icon(
+                  Icons.menu,
+                  color: Colors.black,
+                ),
+              );
+            }
+          ),
+          actions: [
+            InkWell(
+                onTap: (){
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  child: Badge(
+                    badgeColor: Colors.grey,
+                    badgeContent: Text(cartList.length.toString(),
+                      style: TextStyle(
+                          color: Colors.white
+                      ),),
+                    child: Icon(
+                      color: Colors.black,
+                      Icons.shopping_cart,
+                      size: scrheight*0.0352,
+                    ),
+                  ),
+                )
+            ),
+            SizedBox(
+              width: 8,
+            )
+          ],
+        ),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Column(
               children: [
                 Container(
-                  padding: EdgeInsets.only(top: scrheight*0.03, left: scrheight*0.035, bottom: scrheight*0.02),
+                  padding: EdgeInsets.only( left: scrheight*0.035, bottom: scrheight*0.02),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Container(
-                        padding: EdgeInsets.only(right: scrheight*0.03),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    "Hello " + personalDetails["name"],
-                                    style: TextStyle(
-                                      fontSize: scrheight*0.020,
-                                    ),
-                                  ),
-                                  Text(
-                                    "Welcome back!",
-                                    style: TextStyle(
-                                      fontSize: scrheight*0.035,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            InkWell(
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
-                                },
-                                child: Badge(
-                                  badgeColor: Colors.grey,
-                                  badgeContent: Text(cartList.length.toString(),
-                                  style: TextStyle(
-                                    color: Colors.white
-                                  ),),
-                                  child: Icon(
-                                    Icons.shopping_cart,
-                                    size: scrheight*0.0352,
-                                  ),
-                                )
-                            )
-                          ],
-                        ),
-                      ),
-
-                      Container(
                         margin: EdgeInsets.only(top: scrheight*0.017,right: scrheight*0.017),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(scrheight*0.02),
-                          color: const Color(0xffffffff),
+                          color: const Color(0xfffafafa),
                         ),
                         // height: 60.0,
                         child: Row(

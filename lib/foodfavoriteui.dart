@@ -67,7 +67,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
             padding: const EdgeInsets.all(8.0),
             child: InkWell(
                 onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => FoodCartUi(),)).then((value) => setState((){}));
                 },
                 child: Badge(
                   badgeColor: Colors.black,

@@ -250,12 +250,25 @@ class _FoodCartUiState extends State<FoodCartUi> {
                                           SizedBox(
                                             height: h*0.0147,
                                           ),
-                                          Text("Total "+"\$${cartList[index]['price']*cartList[index]['quantity']}",
-                                            style: TextStyle(
-                                                fontSize: h*0.0191,
-                                                fontWeight: FontWeight.bold
-                                            ),
-                                          ),
+                                          Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text("Total "+"\$${cartList[index]['price']*cartList[index]['quantity']}",
+                                                style: TextStyle(
+                                                    fontSize: h*0.0191,
+                                                    fontWeight: FontWeight.bold
+                                                ),
+                                              ),
+                                              GestureDetector(
+                                                  onTap: (){
+                                                    cartList.removeAt(index);
+                                                    setState((){});
+                                                  },
+                                                  child: Icon(Icons.delete_forever,
+                                                  color: Colors.black,))
+                                            ],
+                                          )
+                                          
                                         ],
                                       ),
                                     )

@@ -185,6 +185,13 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                             scrollDirection: Axis.horizontal,
                             itemCount: favoriteList.length,
                             itemBuilder: (context, index) {
+                            var favicon=false;
+                              for(int i=0; i<wishList.length;i++){
+                                if(wishList[i]['name']==favoriteList[index]["name"]){
+                                  // wishList
+                                  favicon=true;
+                                }
+                              }
                               return GestureDetector(
                                 onTap: (){
                                   Navigator.push(
@@ -260,28 +267,60 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                 height: scrheight*0.022,
                                               ),
                                               Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
-                                                  Container(
-                                                    child: Row(
-                                                      children: List.generate(5,
-                                                          (index) {
-                                                        return Icon(
-                                                          Icons.star,
-                                                          color: Colors.orange,
-                                                          size: scrheight*0.0147,
-                                                        );
-                                                      }),
-                                                    ),
-                                                  ),
-                                                  SizedBox(
-                                                    width: scrheight*0.022,
-                                                  ),
                                                   Text(
                                                     "${favoriteList[index]
                                                     ['price']} Rs",
                                                     style: TextStyle(
-                                                      fontSize: scrheight*0.0176,
+                                                        fontSize: scrheight*0.0176,
                                                         color: Colors.white70),
+                                                  ),
+                                                  SizedBox(
+                                                    width: scrheight*0.022,
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(right: 5),
+                                                    child: GestureDetector(
+                                                      onTap: (){
+                                                        if(favicon==false){
+                                                          favicon=true;
+                                                          wishList.add({
+                                                            "img":favoriteList[index]["img"],
+                                                            "name":favoriteList[index]["name"],
+                                                            "price":favoriteList[index]["price"]
+                                                          });
+                                                        }else{
+                                                          favicon=false;
+                                                          var wishindex;
+                                                          for(int i=0; i<wishList.length;i++){
+                                                            if(wishList[i]['name']==favoriteList[index]["name"]){
+                                                              // wishList
+                                                              wishindex=i;
+                                                              setState((){});
+                                                            }
+                                                          }
+                                                          wishList.removeAt(wishindex);
+                                                        }
+                                                        print(wishList);
+
+                                                        setState((){});
+                                                      },
+                                                      child: Icon(
+                                                        favicon==false?
+                                                            Icons.favorite_border:Icons.favorite,
+                                                        color: Colors.red,
+                                                      ),
+                                                    ),
+                                                    // favicon==false?
+                                                    // Icon(
+                                                    //   Icons.favorite_border,
+                                                    //   color: Colors.red,
+                                                    // ):
+                                                    // Icon(
+                                                    //   Icons.favorite,
+                                                    //   color: Colors.red,
+                                                    // ),
                                                   ),
                                                 ],
                                               ),

@@ -13,13 +13,15 @@ class FoodFavoriteUi extends StatefulWidget {
   var description;
   var price;
   var indexvar;
+  var rating;
 
   FoodFavoriteUi({Key? key,
     this.name,
     this.img,
     this.description,
     this.price,
-    this.indexvar
+    this.indexvar,
+    this.rating
   }) : super(key: key);
 
   @override
@@ -123,7 +125,8 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                                       "img":widget.img,
                                       "name":widget.name,
                                       "description":widget.description,
-                                      "price":widget.price
+                                      "price":widget.price,
+                                      "rating":widget.rating
                                     });
                                   }else{
                                     favicon=false;
@@ -213,7 +216,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                                             width: scrheight*0.01,
                                           ),
                                           Text(
-                                            "4.5",
+                                            widget.rating.toString(),
                                             style: TextStyle(
                                                 fontSize: scrheight*0.0205,
                                                 color: Colors.white),

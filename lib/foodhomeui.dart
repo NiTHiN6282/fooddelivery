@@ -251,6 +251,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                           description: favoriteList[index]["description"],
                                           price: favoriteList[index]["price"],
                                           indexvar: index,
+                                          rating: favoriteList[index]['rating'],
                                         ),
                                       )).then((value) => setState((){}));
                                 },
@@ -337,7 +338,8 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                             "img":favoriteList[index]["img"],
                                                             "name":favoriteList[index]["name"],
                                                             "price":favoriteList[index]["price"],
-                                                            "description":favoriteList[index]['description']
+                                                            "description":favoriteList[index]['description'],
+                                                            "rating":favoriteList[index]['rating']
                                                           });
                                                         }else{
                                                           favicon=false;

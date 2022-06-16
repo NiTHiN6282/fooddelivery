@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import 'datalist.dart';
 import 'foodfavoriteui.dart';
@@ -55,6 +56,7 @@ class _WishListPageState extends State<WishListPage> {
                                     name: wishList[index]["name"],
                                     description: wishList[index]["description"],
                                     price: wishList[index]["price"],
+                                    rating: wishList[index]['rating'],
                                   ),
                                 )).then((value) => setState((){}));
                           },
@@ -94,15 +96,24 @@ class _WishListPageState extends State<WishListPage> {
                                     ),
                                     Row(
                                       children: [
-                                        Row(
-                                          children: List.generate(5, (index) {
-                                            return Icon(
-                                              Icons.star,
-                                              color: Colors.orange,
-                                              size: scrheight*0.0205,
-                                            );
-                                          }),
-                                        ),
+                                      RatingBar.builder(
+
+                                        ignoreGestures: true,
+                                        itemSize: 15,
+                                      initialRating: wishList[index]['rating'],
+                                      minRating: 1,
+                                      direction: Axis.horizontal,
+                                      allowHalfRating: true,
+                                      itemCount: 5,
+                                      itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                      itemBuilder: (context, _) => Icon(
+                                        Icons.star,
+                                        color: Colors.amber,
+                                      ),
+                                      onRatingUpdate: (rating) {
+                                        // print(rating);
+                                      },
+                                    ),
                                         SizedBox(
                                           width: scrheight*0.0586,
                                         ),

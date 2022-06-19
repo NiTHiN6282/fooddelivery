@@ -137,19 +137,14 @@ class _WishListPageState extends State<WishListPage> {
                                   children: [
                                     Container(
                                       width: scrheight*0.1465,
+                                      height: 100,
                                       decoration: BoxDecoration(
+                                          image: DecorationImage(
+                                              image: AssetImage(wishList[index]['img'],),
+                                              fit: BoxFit.cover),
                                           color: Colors.black,
                                           borderRadius:
                                           BorderRadius.circular(scrheight*0.022)),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            top: scrheight*0.0293, bottom: scrheight*0.0293),
-                                        child: Image.asset(
-                                          wishList[index]['img'],
-                                          width: scrheight*0.0586,
-                                          height: scrheight*0.0586,
-                                        ),
-                                      ),
                                     ),
                                     // SizedBox(
                                     //   width: scrheight*0.022,

@@ -1,5 +1,6 @@
 import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fooddelivery/foodcartui.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/wishlist.dart';
@@ -166,64 +167,11 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                           ],
                         ),
                       ),
-                      // Container(
-                      //   height: scrheight*0.1171,
-                      //   child: ListView.builder(
-                      //       scrollDirection: Axis.horizontal,
-                      //       itemCount: tabList.length,
-                      //       itemBuilder: (context, index) {
-                      //         return Padding(
-                      //           padding: EdgeInsets.only(right: scrheight*0.022),
-                      //           child: Row(
-                      //             children: [
-                      //               ElevatedButton(
-                      //                 style: ElevatedButton.styleFrom(
-                      //                   primary: isSelected == false
-                      //                       ? Colors.grey
-                      //                       : Colors.brown,
-                      //                   shape: RoundedRectangleBorder(
-                      //                     borderRadius: BorderRadius.circular(
-                      //                         10), // <-- Radius
-                      //                   ),
-                      //                 ),
-                      //                 onPressed: () {
-                      //                   setState(() {
-                      //                     isSelected = true;
-                      //                   });
-                      //                 },
-                      //                 child: Container(
-                      //                   child: Padding(
-                      //                     padding: EdgeInsets.only(
-                      //                         top: scrheight*0.00735, bottom: scrheight*0.00735),
-                      //                     child: Row(
-                      //                       children: [
-                      //                         Image.asset(
-                      //                           tabList[index]["img"],
-                      //                           width: scrheight*0.0367,
-                      //                           height: scrheight*0.0367,
-                      //                         ),
-                      //                         SizedBox(
-                      //                           width: 10,
-                      //                         ),
-                      //                         Text(
-                      //                           tabList[index]["name"],
-                      //                           style: TextStyle(fontSize: scrheight*0.0235),
-                      //                         )
-                      //                       ],
-                      //                     ),
-                      //                   ),
-                      //                 ),
-                      //               ),
-                      //             ],
-                      //           ),
-                      //         );
-                      //       }),
-                      // ),
                       SizedBox(
                         height: scrheight*0.022,
                       ),
                       Text(
-                        "Favorite",
+                        "Recommended",
                         style: TextStyle(fontSize: scrheight*0.022),
                       ),
                       Container(
@@ -231,11 +179,12 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                         child: ListView.builder(
                           physics: BouncingScrollPhysics(),
                             scrollDirection: Axis.horizontal,
-                            itemCount: favoriteList.length,
+                            itemCount: foodList.length,
                             itemBuilder: (context, index) {
-                            var favicon=false;
+                            if(foodList[index]['recommended']==true){
+                              var favicon=false;
                               for(int i=0; i<wishList.length;i++){
-                                if(wishList[i]['name']==favoriteList[index]["name"]){
+                                if(wishList[i]['name']==foodList[index]["name"]){
                                   // wishList
                                   favicon=true;
                                 }
@@ -246,12 +195,12 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                       context,
                                       MaterialPageRoute(
                                         builder: (context) => FoodFavoriteUi(
-                                          img: favoriteList[index]["img"],
-                                          name: favoriteList[index]["name"],
-                                          description: favoriteList[index]["description"],
-                                          price: favoriteList[index]["price"],
+                                          img: foodList[index]["img"],
+                                          name: foodList[index]["name"],
+                                          description: foodList[index]["description"],
+                                          price: foodList[index]["price"],
                                           indexvar: index,
-                                          rating: favoriteList[index]['rating'],
+                                          rating: foodList[index]['rating'],
                                         ),
                                       )).then((value) => setState((){}));
                                 },
@@ -263,6 +212,10 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                         height: scrheight*0.3075,
                                         width: scrheight*0.22,
                                         decoration: BoxDecoration(
+
+                                            image: DecorationImage(
+                                                image: AssetImage(foodList[index]["img"],),
+                                                fit: BoxFit.cover),
                                             gradient: const RadialGradient(
                                               colors: [
                                                 Color(0xff2E2E2E),
@@ -271,33 +224,31 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                               radius: 0.40,
                                             ),
                                             borderRadius:
-                                                BorderRadius.circular(scrheight*0.0293)),
-                                        child: Padding(
+                                            BorderRadius.circular(scrheight*0.0293)),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                          ),
                                           padding: EdgeInsets.only(
                                               top: scrheight*0.022,
                                               bottom: scrheight*0.022,
                                               right: scrheight*0.0147,
                                               left: scrheight*0.0147),
                                           child: Column(
+                                            mainAxisAlignment: MainAxisAlignment.end,
                                             crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                            CrossAxisAlignment.start,
                                             children: [
-                                              Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: scrheight*0.022),
-                                                child: Image.asset(
-                                                  favoriteList[index]['img'],
-                                                  width: scrheight*0.1099,
-                                                  height: scrheight*0.1099,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                height: scrheight*0.022,
-                                              ),
                                               Text(
-                                                favoriteList[index]['name'],
+                                                foodList[index]['name'],
                                                 style: TextStyle(
-                                                  fontSize: scrheight*0.0191,
+                                                    shadows: [
+                                                      Shadow(
+                                                        color: Colors.black.withOpacity(1),
+                                                        offset: Offset(1, 2),
+                                                        blurRadius: 5,
+                                                      ),
+                                                    ],
+                                                    fontSize: 17,
                                                     color: Colors.white,
                                                     fontWeight: FontWeight.bold),
                                               ),
@@ -305,11 +256,18 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                 height: scrheight*0.0074,
                                               ),
                                               Text(
-                                                favoriteList[index]
-                                                    ['description'],
+                                                foodList[index]
+                                                ['description'],
                                                 style: TextStyle(
-                                                  fontSize: scrheight*0.0176,
-                                                    color: Colors.white70),
+                                                    fontSize: 13,
+                                                    shadows: [
+                                                      Shadow(
+                                                        color: Colors.black.withOpacity(1),
+                                                        offset: Offset(1, 2),
+                                                        blurRadius: 5,
+                                                      ),
+                                                    ],
+                                                    color: Colors.white),
                                                 overflow: TextOverflow.ellipsis,
                                               ),
                                               SizedBox(
@@ -319,9 +277,16 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    "${favoriteList[index]
+                                                    "${foodList[index]
                                                     ['price']} Rs",
                                                     style: TextStyle(
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors.black.withOpacity(1),
+                                                            offset: Offset(1, 2),
+                                                            blurRadius: 5,
+                                                          ),
+                                                        ],
                                                         fontSize: scrheight*0.0176,
                                                         color: Colors.white70),
                                                   ),
@@ -335,17 +300,17 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                         if(favicon==false){
                                                           favicon=true;
                                                           wishList.add({
-                                                            "img":favoriteList[index]["img"],
-                                                            "name":favoriteList[index]["name"],
-                                                            "price":favoriteList[index]["price"],
-                                                            "description":favoriteList[index]['description'],
-                                                            "rating":favoriteList[index]['rating']
+                                                            "img":foodList[index]["img"],
+                                                            "name":foodList[index]["name"],
+                                                            "price":foodList[index]["price"],
+                                                            "description":foodList[index]['description'],
+                                                            "rating":foodList[index]['rating']
                                                           });
                                                         }else{
                                                           favicon=false;
                                                           var wishindex;
                                                           for(int i=0; i<wishList.length;i++){
-                                                            if(wishList[i]['name']==favoriteList[index]["name"]){
+                                                            if(wishList[i]['name']==foodList[index]["name"]){
                                                               // wishList
                                                               wishindex=i;
                                                               setState((){});
@@ -359,19 +324,10 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                       },
                                                       child: Icon(
                                                         favicon==false?
-                                                            Icons.favorite_border:Icons.favorite,
+                                                        Icons.favorite_border:Icons.favorite,
                                                         color: Colors.red,
                                                       ),
                                                     ),
-                                                    // favicon==false?
-                                                    // Icon(
-                                                    //   Icons.favorite_border,
-                                                    //   color: Colors.red,
-                                                    // ):
-                                                    // Icon(
-                                                    //   Icons.favorite,
-                                                    //   color: Colors.red,
-                                                    // ),
                                                   ),
                                                 ],
                                               ),
@@ -383,6 +339,10 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                   ),
                                 ),
                               );
+                            }else{
+                              return SizedBox();
+                            }
+
                             }),
                       ),
                       SizedBox(
@@ -394,7 +354,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "More Restaurants",
+                              "More Foods",
                               style: TextStyle(fontSize: scrheight*0.022),
                             ),
                             TextButton(onPressed: (){
@@ -431,69 +391,122 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                             shrinkWrap: true,
                             itemCount: reslist,
                             itemBuilder: (context, index) {
-                              return Container(
-                                padding: EdgeInsets.only(bottom: scrheight*0.0147),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(scrheight*0.0293)),
-                                child: Row(
-                                  children: [
-                                    Container(
-                                      width: scrheight*0.1465,
-                                      decoration: BoxDecoration(
-                                          color: Colors.black,
-                                          borderRadius:
-                                              BorderRadius.circular(scrheight*0.022)),
-                                      child: Padding(
-                                        padding: EdgeInsets.only(
-                                            top: scrheight*0.0293, bottom: scrheight*0.0293),
-                                        child: Image.asset(
-                                          foodList[index]['img'],
-                                          width: scrheight*0.0586,
-                                          height: scrheight*0.0586,
+                              var favicon=false;
+                              for(int i=0; i<wishList.length;i++){
+                                if(wishList[i]['name']==foodList[index]["name"]){
+                                  // wishList
+                                  favicon=true;
+                                }
+                              }
+                              return GestureDetector(
+                                onTap: (){
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => FoodFavoriteUi(
+                                          img: foodList[index]["img"],
+                                          name: foodList[index]["name"],
+                                          description: foodList[index]["description"],
+                                          price: foodList[index]["price"],
+                                          indexvar: index,
+                                          rating: foodList[index]['rating'],
+                                        ),
+                                      )).then((value) => setState((){}));
+                                },
+                                child: Container(
+                                  padding: EdgeInsets.only(bottom: scrheight*0.0147),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(scrheight*0.0293)),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Container(
+                                        width: scrheight*0.1465,
+                                        height: 100,
+                                        decoration: BoxDecoration(
+                                            image: DecorationImage(
+                                                image: AssetImage(foodList[index]['img'],),
+                                                fit: BoxFit.cover),
+                                            color: Colors.black,
+                                            borderRadius:
+                                                BorderRadius.circular(scrheight*0.022)),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            foodList[index]['name'],
+                                            style: TextStyle(fontSize: scrheight*0.0205),
+                                          ),
+                                          SizedBox(
+                                            height: 30,
+                                          ),
+                                          RatingBar.builder(
+
+                                            ignoreGestures: true,
+                                            itemSize: 15,
+                                            initialRating: foodList[index]['rating'],
+                                            minRating: 1,
+                                            direction: Axis.horizontal,
+                                            allowHalfRating: true,
+                                            itemCount: 5,
+                                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                            itemBuilder: (context, _) => Icon(
+                                              Icons.star,
+                                              color: Colors.amber,
+                                            ),
+                                            onRatingUpdate: (rating) {
+                                              // print(rating);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                      Text(
+                                        foodList[index]['price'].toString()+"Rs",
+                                        style:
+                                        TextStyle(
+                                            fontSize: scrheight*0.0191,
+                                            color: Colors.black),
+                                      ),
+                                      Container(
+                                        padding: EdgeInsets.only(right: 5),
+                                        child: GestureDetector(
+                                          onTap: (){
+                                            if(favicon==false){
+                                              favicon=true;
+                                              wishList.add({
+                                                "img":foodList[index]["img"],
+                                                "name":foodList[index]["name"],
+                                                "price":foodList[index]["price"],
+                                                "description":foodList[index]['description'],
+                                                "rating":foodList[index]['rating']
+                                              });
+                                            }else{
+                                              favicon=false;
+                                              var wishindex;
+                                              for(int i=0; i<wishList.length;i++){
+                                                if(wishList[i]['name']==foodList[index]["name"]){
+                                                  // wishList
+                                                  wishindex=i;
+                                                  setState((){});
+                                                }
+                                              }
+                                              wishList.removeAt(wishindex);
+                                            }
+                                            print(wishList);
+
+                                            setState((){});
+                                          },
+                                          child: Icon(
+                                            favicon==false?
+                                            Icons.favorite_border:Icons.favorite,
+                                            color: Colors.red,
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: scrheight*0.022,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          foodList[index]['name'],
-                                          style: TextStyle(fontSize: scrheight*0.0205),
-                                        ),
-                                        Row(
-                                          children: [
-                                            Row(
-                                              children: List.generate(5, (index) {
-                                                return Icon(
-                                                  Icons.star,
-                                                  color: Colors.orange,
-                                                  size: scrheight*0.0205,
-                                                );
-                                              }),
-                                            ),
-                                            SizedBox(
-                                              width: scrheight*0.0586,
-                                            ),
-                                            Text(
-                                              foodList[index]['price'],
-                                              style:
-                                                  TextStyle(
-                                                      fontSize: scrheight*0.0191,
-                                                      color: Colors.black),
-                                            ),
-                                          ],
-                                        ),
-                                        Text(foodList[index]['distance'],
-                                        style: TextStyle(
-                                          fontSize: scrheight*0.0191
-                                        ),)
-                                      ],
-                                    )
-                                  ],
+                                    ],
+                                  ),
                                 ),
                               );
                             }),

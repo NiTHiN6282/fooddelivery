@@ -108,6 +108,12 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                     ),
                   ),
                   child: Container(
+                    decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage(widget.img),
+                          fit: BoxFit.cover,
+                      ),
+                    ),
                     width: scrwidth,
                     child: Column(
                       // mainAxisAlignment: MainAxisAlignment.center,
@@ -161,10 +167,6 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                             ),
                           ],
                         ),
-                        Image.asset(
-                          widget.img,
-                          width: scrheight*0.16,
-                        )
                       ],
                     ),
                   ),

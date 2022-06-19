@@ -2,6 +2,8 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fooddelivery/foodcartui.dart';
+import 'package:fooddelivery/loginpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'datalist.dart';
 import 'foodfavoriteui.dart';
@@ -73,6 +75,15 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                     ),
                   )
               ),
+              ListTile(
+                onTap: () async {
+                  final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                  sharedPreferences.remove('email');
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+                },
+                leading: Icon(Icons.logout),
+                title: Text("Logout"),
+              )
             ],
           ),
         ),

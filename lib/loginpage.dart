@@ -158,7 +158,7 @@ class _LoginPageState extends State<LoginPage> {
 
                                 final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
                                 sharedPreferences.setString('email', emailinputcontroller.value.text);
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => LandingPage(),));
+                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage(),));
 
                               }
                             }

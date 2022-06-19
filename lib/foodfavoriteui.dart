@@ -96,17 +96,6 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
               children: [
                 Container(
                   height: scrheight*0.3,
-                  decoration: BoxDecoration(
-                    gradient: const RadialGradient(
-                      colors: [
-                        Color(0xff484a4d),
-                        Color(0xff2E2E2E),
-                        Color(0xff171717),
-                        Color(0xff171717)
-                      ],
-                      radius: 0.9,
-                    ),
-                  ),
                   child: Container(
                     decoration: BoxDecoration(
                       image: DecorationImage(
@@ -176,15 +165,6 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                     width: scrwidth,
                     decoration: BoxDecoration(
                       color: Colors.black,
-                      gradient: const RadialGradient(
-                        colors: [
-                          Color(0xff8A8A8A),
-                          Color(0xff2E2E2E),
-                          Color(0xff171717),
-                          Color(0xff171717)
-                        ],
-                        radius: 0.9,
-                      ),
                     ),
                     child: Container(
                       padding: EdgeInsets.only(left: scrheight*0.040, top: scrheight*0.03, right: scrheight*0.040),

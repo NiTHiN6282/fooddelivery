@@ -2,8 +2,6 @@ import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fooddelivery/foodcartui.dart';
-import 'package:fooddelivery/landingpage.dart';
-import 'package:fooddelivery/wishlist.dart';
 
 import 'datalist.dart';
 import 'foodfavoriteui.dart';
@@ -216,13 +214,6 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                             image: DecorationImage(
                                                 image: AssetImage(foodList[index]["img"],),
                                                 fit: BoxFit.cover),
-                                            gradient: const RadialGradient(
-                                              colors: [
-                                                Color(0xff2E2E2E),
-                                                Color(0xff171717)
-                                              ],
-                                              radius: 0.40,
-                                            ),
                                             borderRadius:
                                             BorderRadius.circular(scrheight*0.0293)),
                                         child: Container(

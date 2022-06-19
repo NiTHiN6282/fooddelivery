@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'cartlist.dart';
 import 'datalist.dart';
-
-// List<dynamic> tempQty=List.filled(cartList.length,1, growable: true);
 
 class FoodCartUi extends StatefulWidget {
   const FoodCartUi({Key? key}) : super(key: key);
@@ -23,9 +20,6 @@ class _FoodCartUiState extends State<FoodCartUi> {
     var h=MediaQuery.of(context).size.height;
     var w=MediaQuery.of(context).size.width;
 
-    // for(int i=0;i<cartList.length;i++){
-    //   tempQty[i]=cartList[i]['quantity'];
-    // }
     int subTotal=0;
 
     for(int i=0;i<cartList.length;i++){
@@ -105,15 +99,14 @@ class _FoodCartUiState extends State<FoodCartUi> {
                                       child: Row(
                                         children: [
                                           Container(
+                                            width: 100,
+                                            height: 100,
                                             decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(cartList[index]['img'],),
+                                                  fit: BoxFit.cover),
                                               borderRadius: BorderRadius.circular(h*0.0176),
                                               color: Colors.black,
-                                            ),
-                                            padding: EdgeInsets.all(h*0.015),
-                                            child: Image.asset(
-                                              cartList[index]['img'],
-                                              width: h*0.06,
-                                              height: h*0.06,
                                             ),
                                           ),
                                           SizedBox(

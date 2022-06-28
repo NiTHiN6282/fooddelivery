@@ -9,7 +9,9 @@ import 'datalist.dart';
 import 'foodfavoriteui.dart';
 
 class FoodHomeUi extends StatefulWidget {
-  const FoodHomeUi({Key? key}) : super(key: key);
+  var uid;
+  FoodHomeUi({Key? key,
+  this.uid}) : super(key: key);
 
   @override
   State<FoodHomeUi> createState() => _FoodHomeUiState();
@@ -22,6 +24,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
 
   @override
   Widget build(BuildContext context) {
+    print("userid"+widget.uid);
     var scrwidth = MediaQuery.of(context).size.width;
     var scrheight = MediaQuery.of(context).size.height;
     return GestureDetector(

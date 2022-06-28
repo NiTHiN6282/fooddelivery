@@ -3,7 +3,9 @@ import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/wishlist.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key}) : super(key: key);
+  dynamic uid;
+  LandingPage({Key? key,
+    required this.uid}) : super(key: key);
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -14,10 +16,24 @@ class _LandingPageState extends State<LandingPage> {
 
   static const TextStyle optionStyle =
   TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
-  dynamic _widgetOptions = <Widget>[
-    FoodHomeUi(),
-    WishListPage()
-  ];
+
+  dynamic _widgetOptions;
+
+  void setData(){
+    _widgetOptions = <Widget>[
+      FoodHomeUi(
+        uid: widget.uid,
+      ),
+      WishListPage()
+    ];
+  }
+
+  @override
+  void initState() {
+    setData();
+    super.initState();
+  }
+
 
   void _onItemTapped(int index) {
     setState(() {

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/userregistration.dart';
@@ -153,14 +155,34 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           onPressed: () async {
                             if(_loginkey.currentState!.validate()){
-                              print(emailinputcontroller.value.text);
-                              if(emailinputcontroller.value.text=="n@gmail.com"&&passwordinputcontroller.value.text=="Aa123!"){
-
-                                final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-                                sharedPreferences.setString('email', emailinputcontroller.value.text);
-                                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage(),));
-
-                              }
+                              FirebaseAuth.instance
+                                  .signInWithEmailAndPassword(
+                                  email: emailinputcontroller.text,
+                                  password: passwordinputcontroller.text)
+                                  .then((value) => FirebaseFirestore.instance
+                                  .collection('user')
+                                  .doc(value.user!.uid)
+                                  .get()
+                                  .then((value) {
+                                Navigator.pushReplacement(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            LandingPage(
+                                                uid: value.data()!['uid']
+                                            )
+                                    ));
+                              }))
+                                  .catchError(
+                                      (e) => showsnackbar('Login failed'));
+                              // print(emailinputcontroller.value.text);
+                              // if(emailinputcontroller.value.text=="n@gmail.com"&&passwordinputcontroller.value.text=="Aa123!"){
+                              //
+                              //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+                              //   sharedPreferences.setString('email', emailinputcontroller.value.text);
+                              //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage(),));
+                              //
+                              // }
                             }
                           },
                           child: Text('Login'),
@@ -192,6 +214,15 @@ class _LoginPageState extends State<LoginPage> {
     );
 
 
+  }
+
+  showsnackbar(String msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      backgroundColor: Colors.blue,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   void _togglePasswordView() {

@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/snackbar.dart';
@@ -260,7 +262,27 @@ class _UserRegistrationState extends State<UserRegistration> {
                           onPressed: () {
                             FocusManager.instance.primaryFocus?.unfocus();
                             if(_loginkey.currentState!.validate()){
-                              CustomSnackBar.customSnackbar(context, 1,"account created!");
+                              FirebaseAuth.instance
+                                  .createUserWithEmailAndPassword(
+                                  email: emailinputcontroller.text,
+                                  password: passwordinputcontroller.text)
+                                  .then((value) => FirebaseFirestore.instance
+                                  .collection('user')
+                                  .doc(value.user!.uid)
+                                  .set({
+                                'uid': value.user!.uid,
+                                'name': nameinputcontroller.text,
+                                'phone': phoneinputcontroller.text,
+                                'email': emailinputcontroller.text,
+                                'date': DateTime.now(),
+                                'status':1
+                              }).catchError((e) => showsnackbar(
+                                  'Registration Failed')))
+                                  .then((value) {
+                                showsnackbar('Registered successfully');
+                                Navigator.pop(context);
+                              }).catchError(
+                                      (e) => showsnackbar('Registration failed'));
                             }
                           },
                           child: Text('Sign Up'),
@@ -292,4 +314,14 @@ class _UserRegistrationState extends State<UserRegistration> {
       ),
     );
   }
+
+  showsnackbar(String msg) {
+    final snackBar = SnackBar(
+      content: Text(msg),
+      backgroundColor: Colors.blue,
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 }

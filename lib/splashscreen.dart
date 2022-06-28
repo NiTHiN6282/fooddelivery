@@ -1,6 +1,9 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/loginpage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,31 +19,58 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
 
-  @override
-  void initState(){
-    getValidationData().whenComplete(() async {
-      Timer(Duration(seconds: 2), () {
-        if(finalEmail==null){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
-        }else{
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage(),));
-        }
-      });
+  // @override
+  // void initState(){
+  //   getValidationData().whenComplete(() async {
+  //     Timer(Duration(seconds: 2), () {
+  //       if(finalEmail==null){
+  //         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
+  //       }else{
+  //         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage(),));
+  //       }
+  //     });
+  //
+  //   });
+  // }
 
-    });
-  }
-
-  Future getValidationData() async{
-    final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var obtainedEmail=sharedPreferences.getString('email');
-    setState((){
-      finalEmail=obtainedEmail;
-    });
-    print(finalEmail);
-  }
+  // Future getValidationData() async{
+  //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  //   var obtainedEmail=sharedPreferences.getString('email');
+  //   setState((){
+  //     finalEmail=obtainedEmail;
+  //   });
+  //   print(finalEmail);
+  // }
 
   @override
   Widget build(BuildContext context) {
+    firebaseCall(){
+      FirebaseAuth.instance
+          .authStateChanges()
+          .listen((User? user) {
+        if (user == null) {
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) =>  LoginPage()));
+        } else {
+          FirebaseFirestore.instance
+              .collection('user')
+              .doc(user.uid)
+              .get()
+              .then((value) {
+            if (value.data()!['status'] == 1 &&
+                value.data()!['usertype'] == 'user') {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => LandingPage(
+                        uid: value.data()!['uid'],
+                      )));
+            }
+          });
+        }
+      });
+    };
+    firebaseCall();
     return Scaffold(
       body: Center(
         child: Column(

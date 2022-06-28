@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fooddelivery/foodcartui.dart';
@@ -188,102 +189,69 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                       ),
                       Container(
                         height: MediaQuery.of(context).size.height * 0.3,
-                        child: ListView.builder(
-                          physics: BouncingScrollPhysics(),
-                            scrollDirection: Axis.horizontal,
-                            itemCount: foodList.length,
-                            itemBuilder: (context, index) {
-                            if(foodList[index]['recommended']==true){
-                              var favicon=false;
-                              for(int i=0; i<wishList.length;i++){
-                                if(wishList[i]['name']==foodList[index]["name"]){
-                                  // wishList
-                                  favicon=true;
-                                }
-                              }
-                              return GestureDetector(
-                                onTap: (){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FoodFavoriteUi(
-                                          img: foodList[index]["img"],
-                                          name: foodList[index]["name"],
-                                          description: foodList[index]["description"],
-                                          price: foodList[index]["price"],
-                                          indexvar: index,
-                                          rating: foodList[index]['rating'],
-                                        ),
-                                      )).then((value) => setState((){}));
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(top: scrheight*0.0147, right: scrheight*0.022),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: scrheight*0.3075,
-                                        width: scrheight*0.22,
-                                        decoration: BoxDecoration(
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance.collection('foods').where("recommended",isEqualTo: true).snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+                              return const Center(child: Text('no recommendations found'));
+                            }else {
+                              return ListView.builder(
+                              physics: BouncingScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: snapshot.data!.docs.length,
+                                itemBuilder: (context, index) {
+                                  var favicon=false;
+                                  for(int i=0; i<wishList.length;i++){
+                                    if(wishList[i]['name']==foodList[index]["name"]){
+                                      // wishList
+                                      favicon=true;
+                                    }
+                                  }
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FoodFavoriteUi(
+                                              image: snapshot.data!.docs[index]['image'],
+                                              name: snapshot.data!.docs[index]['name'],
+                                              description: snapshot.data!.docs[index]['description'],
+                                              price: snapshot.data!.docs[index]['price'],
+                                              rating: snapshot.data!.docs[index]['rating'],
+                                            ),
+                                          )).then((value) => setState((){}));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.only(top: scrheight*0.0147, right: scrheight*0.022),
+                                      child: Row(
+                                        children: [
+                                          Container(
+                                            height: scrheight*0.3075,
+                                            width: scrheight*0.22,
+                                            decoration: BoxDecoration(
 
-                                            image: DecorationImage(
-                                                image: AssetImage(foodList[index]["img"],),
-                                                fit: BoxFit.cover),
-                                            borderRadius:
-                                            BorderRadius.circular(scrheight*0.0293)),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                          ),
-                                          padding: EdgeInsets.only(
-                                              top: scrheight*0.022,
-                                              bottom: scrheight*0.022,
-                                              right: scrheight*0.0147,
-                                              left: scrheight*0.0147),
-                                          child: Column(
-                                            mainAxisAlignment: MainAxisAlignment.end,
-                                            crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                foodList[index]['name'],
-                                                style: TextStyle(
-                                                    shadows: [
-                                                      Shadow(
-                                                        color: Colors.black.withOpacity(1),
-                                                        offset: Offset(1, 2),
-                                                        blurRadius: 5,
-                                                      ),
-                                                    ],
-                                                    fontSize: 17,
-                                                    color: Colors.white,
-                                                    fontWeight: FontWeight.bold),
+                                                image: DecorationImage(
+                                                    image: NetworkImage(snapshot.data!.docs[index]['image'],),
+                                                    fit: BoxFit.cover),
+                                                borderRadius:
+                                                BorderRadius.circular(scrheight*0.0293)),
+                                            child: Container(
+                                              decoration: BoxDecoration(
                                               ),
-                                              SizedBox(
-                                                height: scrheight*0.0074,
-                                              ),
-                                              Text(
-                                                foodList[index]
-                                                ['description'],
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    shadows: [
-                                                      Shadow(
-                                                        color: Colors.black.withOpacity(1),
-                                                        offset: Offset(1, 2),
-                                                        blurRadius: 5,
-                                                      ),
-                                                    ],
-                                                    color: Colors.white),
-                                                overflow: TextOverflow.ellipsis,
-                                              ),
-                                              SizedBox(
-                                                height: scrheight*0.022,
-                                              ),
-                                              Row(
-                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                              padding: EdgeInsets.only(
+                                                  top: scrheight*0.022,
+                                                  bottom: scrheight*0.022,
+                                                  right: scrheight*0.0147,
+                                                  left: scrheight*0.0147),
+                                              child: Column(
+                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                CrossAxisAlignment.start,
                                                 children: [
                                                   Text(
-                                                    "${foodList[index]
-                                                    ['price']} Rs",
+                                                    snapshot.data!.docs[index]['name'],
                                                     style: TextStyle(
                                                         shadows: [
                                                           Shadow(
@@ -292,63 +260,100 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                             blurRadius: 5,
                                                           ),
                                                         ],
-                                                        fontSize: scrheight*0.0176,
-                                                        color: Colors.white70),
+                                                        fontSize: 17,
+                                                        color: Colors.white,
+                                                        fontWeight: FontWeight.bold),
                                                   ),
                                                   SizedBox(
-                                                    width: scrheight*0.022,
+                                                    height: scrheight*0.0074,
                                                   ),
-                                                  Container(
-                                                    padding: EdgeInsets.only(right: 5),
-                                                    child: GestureDetector(
-                                                      onTap: (){
-                                                        if(favicon==false){
-                                                          favicon=true;
-                                                          wishList.add({
-                                                            "img":foodList[index]["img"],
-                                                            "name":foodList[index]["name"],
-                                                            "price":foodList[index]["price"],
-                                                            "description":foodList[index]['description'],
-                                                            "rating":foodList[index]['rating']
-                                                          });
-                                                        }else{
-                                                          favicon=false;
-                                                          var wishindex;
-                                                          for(int i=0; i<wishList.length;i++){
-                                                            if(wishList[i]['name']==foodList[index]["name"]){
-                                                              // wishList
-                                                              wishindex=i;
-                                                              setState((){});
-                                                            }
-                                                          }
-                                                          wishList.removeAt(wishindex);
-                                                        }
-                                                        print(wishList);
-
-                                                        setState((){});
-                                                      },
-                                                      child: Icon(
-                                                        favicon==false?
-                                                        Icons.favorite_border:Icons.favorite,
-                                                        color: Colors.red,
+                                                  Text(
+                                                    snapshot.data!.docs[index]['description'],
+                                                    style: TextStyle(
+                                                        fontSize: 13,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors.black.withOpacity(1),
+                                                            offset: Offset(1, 2),
+                                                            blurRadius: 5,
+                                                          ),
+                                                        ],
+                                                        color: Colors.white),
+                                                    overflow: TextOverflow.ellipsis,
+                                                  ),
+                                                  SizedBox(
+                                                    height: scrheight*0.022,
+                                                  ),
+                                                  Row(
+                                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        "${snapshot.data!.docs[index]['price']} Rs",
+                                                        style: TextStyle(
+                                                            shadows: [
+                                                              Shadow(
+                                                                color: Colors.black.withOpacity(1),
+                                                                offset: Offset(1, 2),
+                                                                blurRadius: 5,
+                                                              ),
+                                                            ],
+                                                            fontSize: scrheight*0.0176,
+                                                            color: Colors.white70),
                                                       ),
-                                                    ),
+                                                      SizedBox(
+                                                        width: scrheight*0.022,
+                                                      ),
+                                                      Container(
+                                                        padding: EdgeInsets.only(right: 5),
+                                                        child: GestureDetector(
+                                                          onTap: (){
+                                                            if(favicon==false){
+                                                              favicon=true;
+                                                              wishList.add({
+                                                                "img":foodList[index]["img"],
+                                                                "name":foodList[index]["name"],
+                                                                "price":foodList[index]["price"],
+                                                                "description":foodList[index]['description'],
+                                                                "rating":foodList[index]['rating']
+                                                              });
+                                                            }else{
+                                                              favicon=false;
+                                                              var wishindex;
+                                                              for(int i=0; i<wishList.length;i++){
+                                                                if(wishList[i]['name']==foodList[index]["name"]){
+                                                                  // wishList
+                                                                  wishindex=i;
+                                                                  setState((){});
+                                                                }
+                                                              }
+                                                              wishList.removeAt(wishindex);
+                                                            }
+                                                            print(wishList);
+
+                                                            setState((){});
+                                                          },
+                                                          child: Icon(
+                                                            favicon==false?
+                                                            Icons.favorite_border:Icons.favorite,
+                                                            color: Colors.red,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ],
                                                   ),
                                                 ],
                                               ),
-                                            ],
+                                            ),
                                           ),
-                                        ),
+                                        ],
                                       ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }else{
-                              return SizedBox();
-                            }
+                                    ),
+                                  );
 
-                            }),
+                                });
+                            }
+                          }
+                        ),
                       ),
                       SizedBox(
                         height: scrheight*0.0293,
@@ -362,159 +367,163 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                               "More Foods",
                               style: TextStyle(fontSize: scrheight*0.022),
                             ),
-                            TextButton(onPressed: (){
-                              if(reslist==2){
-                                setState((){
-                                  reslist=foodList.length;
-                                });
-                              }else{
-                                setState((){
-                                  reslist=2;
-                                });
-                              }
+                            StreamBuilder<QuerySnapshot>(
+                              stream: FirebaseFirestore.instance.collection('foods').snapshots(),
+                              builder: (context, snapshot) {
+                                return TextButton(onPressed: (){
+                                  if(reslist==2){
+                                    setState((){
+                                      reslist=snapshot.data!.docs.length;
+                                    });
+                                  }else{
+                                    setState((){
+                                      reslist=2;
+                                    });
+                                  }
 
-                            }, child: reslist==2?Text("See more",
-                              style: TextStyle(
-                                  fontSize: scrheight*0.022,
-                                  color: Color(0xffFFB52E)
-                              ),):Text("See less",
-                              style: TextStyle(
-                                  fontSize: scrheight*0.022,
-                                  color: Color(0xffFFB52E)
-                              ),))
-                            // Text(
-                            //   "See all",
-                            //   style: TextStyle(
-                            //       fontSize: scrheight*0.022, color: Color(0xffFFB52E)),
-                            // )
+                                }, child: reslist==2?Text("See more",
+                                  style: TextStyle(
+                                      fontSize: scrheight*0.022,
+                                      color: Color(0xffFFB52E)
+                                  ),):Text("See less",
+                                  style: TextStyle(
+                                      fontSize: scrheight*0.022,
+                                      color: Color(0xffFFB52E)
+                                  ),));
+                              }
+                            )
                           ],
                         ),
                       ),
                       Container(
-                        child: ListView.builder(
-                          physics: NeverScrollableScrollPhysics(),
-                            shrinkWrap: true,
-                            itemCount: reslist,
-                            itemBuilder: (context, index) {
-                              var favicon=false;
-                              for(int i=0; i<wishList.length;i++){
-                                if(wishList[i]['name']==foodList[index]["name"]){
-                                  // wishList
-                                  favicon=true;
-                                }
-                              }
-                              return GestureDetector(
-                                onTap: (){
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => FoodFavoriteUi(
-                                          img: foodList[index]["img"],
-                                          name: foodList[index]["name"],
-                                          description: foodList[index]["description"],
-                                          price: foodList[index]["price"],
-                                          indexvar: index,
-                                          rating: foodList[index]['rating'],
-                                        ),
-                                      )).then((value) => setState((){}));
-                                },
-                                child: Container(
-                                  padding: EdgeInsets.only(bottom: scrheight*0.0147),
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(scrheight*0.0293)),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Container(
-                                        width: scrheight*0.1465,
-                                        height: 100,
-                                        decoration: BoxDecoration(
-                                            image: DecorationImage(
-                                                image: AssetImage(foodList[index]['img'],),
-                                                fit: BoxFit.cover),
-                                            color: Colors.black,
-                                            borderRadius:
-                                                BorderRadius.circular(scrheight*0.022)),
-                                      ),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            foodList[index]['name'],
-                                            style: TextStyle(fontSize: scrheight*0.0205),
-                                          ),
-                                          SizedBox(
-                                            height: 30,
-                                          ),
-                                          RatingBar.builder(
-
-                                            ignoreGestures: true,
-                                            itemSize: 15,
-                                            initialRating: foodList[index]['rating'],
-                                            minRating: 1,
-                                            direction: Axis.horizontal,
-                                            allowHalfRating: true,
-                                            itemCount: 5,
-                                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                            itemBuilder: (context, _) => Icon(
-                                              Icons.star,
-                                              color: Colors.amber,
+                        child: StreamBuilder<QuerySnapshot>(
+                          stream: FirebaseFirestore.instance.collection('foods').snapshots(),
+                          builder: (context, snapshot) {
+                            return ListView.builder(
+                              physics: NeverScrollableScrollPhysics(),
+                                shrinkWrap: true,
+                                itemCount: reslist,
+                                itemBuilder: (context, index) {
+                                  var favicon=false;
+                                  for(int i=0; i<wishList.length;i++){
+                                    if(wishList[i]['name']==foodList[index]["name"]){
+                                      // wishList
+                                      favicon=true;
+                                    }
+                                  }
+                                  return GestureDetector(
+                                    onTap: (){
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => FoodFavoriteUi(
+                                              image: snapshot.data!.docs[index]['image'],
+                                              name: snapshot.data!.docs[index]["name"],
+                                              description: snapshot.data!.docs[index]["description"],
+                                              price: snapshot.data!.docs[index]["price"],
+                                              rating: snapshot.data!.docs[index]['rating'],
                                             ),
-                                            onRatingUpdate: (rating) {
-                                              // print(rating);
-                                            },
+                                          )).then((value) => setState((){}));
+                                    },
+                                    child: Container(
+                                      padding: EdgeInsets.only(bottom: scrheight*0.0147),
+                                      decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(scrheight*0.0293)),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Container(
+                                            width: scrheight*0.1465,
+                                            height: 100,
+                                            decoration: BoxDecoration(
+                                                image: DecorationImage(
+                                                    image: AssetImage(foodList[index]['img'],),
+                                                    fit: BoxFit.cover),
+                                                color: Colors.black,
+                                                borderRadius:
+                                                    BorderRadius.circular(scrheight*0.022)),
+                                          ),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                foodList[index]['name'],
+                                                style: TextStyle(fontSize: scrheight*0.0205),
+                                              ),
+                                              SizedBox(
+                                                height: 30,
+                                              ),
+                                              RatingBar.builder(
+
+                                                ignoreGestures: true,
+                                                itemSize: 15,
+                                                initialRating: foodList[index]['rating'],
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                allowHalfRating: true,
+                                                itemCount: 5,
+                                                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                                                itemBuilder: (context, _) => Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                ),
+                                                onRatingUpdate: (rating) {
+                                                  // print(rating);
+                                                },
+                                              ),
+                                            ],
+                                          ),
+                                          Text(
+                                            foodList[index]['price'].toString()+"Rs",
+                                            style:
+                                            TextStyle(
+                                                fontSize: scrheight*0.0191,
+                                                color: Colors.black),
+                                          ),
+                                          Container(
+                                            padding: EdgeInsets.only(right: 5),
+                                            child: GestureDetector(
+                                              onTap: (){
+                                                if(favicon==false){
+                                                  favicon=true;
+                                                  wishList.add({
+                                                    "img":foodList[index]["img"],
+                                                    "name":foodList[index]["name"],
+                                                    "price":foodList[index]["price"],
+                                                    "description":foodList[index]['description'],
+                                                    "rating":foodList[index]['rating']
+                                                  });
+                                                }else{
+                                                  favicon=false;
+                                                  var wishindex;
+                                                  for(int i=0; i<wishList.length;i++){
+                                                    if(wishList[i]['name']==foodList[index]["name"]){
+                                                      // wishList
+                                                      wishindex=i;
+                                                      setState((){});
+                                                    }
+                                                  }
+                                                  wishList.removeAt(wishindex);
+                                                }
+                                                print(wishList);
+
+                                                setState((){});
+                                              },
+                                              child: Icon(
+                                                favicon==false?
+                                                Icons.favorite_border:Icons.favorite,
+                                                color: Colors.red,
+                                              ),
+                                            ),
                                           ),
                                         ],
                                       ),
-                                      Text(
-                                        foodList[index]['price'].toString()+"Rs",
-                                        style:
-                                        TextStyle(
-                                            fontSize: scrheight*0.0191,
-                                            color: Colors.black),
-                                      ),
-                                      Container(
-                                        padding: EdgeInsets.only(right: 5),
-                                        child: GestureDetector(
-                                          onTap: (){
-                                            if(favicon==false){
-                                              favicon=true;
-                                              wishList.add({
-                                                "img":foodList[index]["img"],
-                                                "name":foodList[index]["name"],
-                                                "price":foodList[index]["price"],
-                                                "description":foodList[index]['description'],
-                                                "rating":foodList[index]['rating']
-                                              });
-                                            }else{
-                                              favicon=false;
-                                              var wishindex;
-                                              for(int i=0; i<wishList.length;i++){
-                                                if(wishList[i]['name']==foodList[index]["name"]){
-                                                  // wishList
-                                                  wishindex=i;
-                                                  setState((){});
-                                                }
-                                              }
-                                              wishList.removeAt(wishindex);
-                                            }
-                                            print(wishList);
-
-                                            setState((){});
-                                          },
-                                          child: Icon(
-                                            favicon==false?
-                                            Icons.favorite_border:Icons.favorite,
-                                            color: Colors.red,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }),
+                                    ),
+                                  );
+                                });
+                          }
+                        ),
                       ),
                     ],
                   ),

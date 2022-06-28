@@ -8,19 +8,17 @@ import 'foodcartui.dart';
 
 class FoodFavoriteUi extends StatefulWidget {
   var name;
-  var img;
+  var image;
   var description;
   var price;
-  var indexvar;
   var rating;
 
   FoodFavoriteUi(
       {Key? key,
       this.name,
-      this.img,
+      this.image,
       this.description,
       this.price,
-      this.indexvar,
       this.rating})
       : super(key: key);
 
@@ -103,7 +101,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                 height: 300,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: AssetImage(widget.img,),
+                      image: NetworkImage(widget.image,),
                       fit: BoxFit.cover),
                 ),
               )),
@@ -277,7 +275,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                               }else{
                                 cartList.add({
                                   'name':widget.name,
-                                  'img':widget.img,
+                                  'img':widget.image,
                                   'price':widget.price,
                                   'quantity':count
                                 });

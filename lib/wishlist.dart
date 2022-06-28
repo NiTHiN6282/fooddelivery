@@ -54,7 +54,7 @@ class _WishListPageState extends State<WishListPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => FoodFavoriteUi(
-                                    img: wishList[index]["img"],
+                                    image: wishList[index]["img"],
                                     name: wishList[index]["name"],
                                     description: wishList[index]["description"],
                                     price: wishList[index]["price"],

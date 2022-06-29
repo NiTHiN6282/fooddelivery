@@ -24,9 +24,27 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
   bool isSelected = false;
   var reslist=2;
 
+  var checkList;
+  getList(){
+    FirebaseFirestore.instance.collection('user').doc(widget.uid).snapshots().listen((event) {
+      checkList=event.get('favorites');
+      if(mounted){
+        setState((){});
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    getList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     print("userid"+widget.uid);
+    print(checkList);
     var scrwidth = MediaQuery.of(context).size.width;
     var scrheight = MediaQuery.of(context).size.height;
     return GestureDetector(
@@ -204,12 +222,15 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                 itemCount: snapshot.data!.docs.length,
                                 itemBuilder: (context, index) {
                                   var favicon=false;
-                                  for(int i=0; i<wishList.length;i++){
-                                    if(wishList[i]['name']==foodList[index]["name"]){
-                                      // wishList
-                                      favicon=true;
+                                  if(checkList!=null){
+                                    for(int i=0; i<checkList.length;i++){
+                                      if(snapshot.data!.docs[index]['foodid']==checkList[i]){
+                                        // wishList
+                                        favicon=true;
+                                      }
                                     }
                                   }
+
                                   return GestureDetector(
                                     onTap: (){
                                       Navigator.push(
@@ -308,28 +329,21 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                         padding: EdgeInsets.only(right: 5),
                                                         child: GestureDetector(
                                                           onTap: (){
+
                                                             if(favicon==false){
                                                               favicon=true;
-                                                              wishList.add({
-                                                                "img":foodList[index]["img"],
-                                                                "name":foodList[index]["name"],
-                                                                "price":foodList[index]["price"],
-                                                                "description":foodList[index]['description'],
-                                                                "rating":foodList[index]['rating']
+                                                              checkList.add(snapshot.data!.docs[index]['foodid']);
+                                                              FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
+                                                                "favorites":FieldValue.arrayUnion(checkList),
                                                               });
                                                             }else{
                                                               favicon=false;
-                                                              var wishindex;
-                                                              for(int i=0; i<wishList.length;i++){
-                                                                if(wishList[i]['name']==foodList[index]["name"]){
-                                                                  // wishList
-                                                                  wishindex=i;
-                                                                  setState((){});
-                                                                }
-                                                              }
-                                                              wishList.removeAt(wishindex);
+                                                              var delvalue=[];
+                                                              delvalue.add(snapshot.data!.docs[index]['foodid']);
+                                                              FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
+                                                                "favorites":FieldValue.arrayRemove(delvalue),
+                                                              });
                                                             }
-                                                            print(wishList);
 
                                                             setState((){});
                                                           },

@@ -5,7 +5,9 @@ import 'datalist.dart';
 import 'foodfavoriteui.dart';
 
 class WishListPage extends StatefulWidget {
-  const WishListPage({Key? key}) : super(key: key);
+  var uid;
+  WishListPage({Key? key,
+  this.uid}) : super(key: key);
 
   @override
   State<WishListPage> createState() => _WishListPageState();

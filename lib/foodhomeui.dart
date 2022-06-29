@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -233,7 +234,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                             decoration: BoxDecoration(
 
                                                 image: DecorationImage(
-                                                    image: NetworkImage(snapshot.data!.docs[index]['image'],),
+                                                    image: CachedNetworkImageProvider(snapshot.data!.docs[index]['image']),
                                                     fit: BoxFit.cover),
                                                 borderRadius:
                                                 BorderRadius.circular(scrheight*0.0293)),
@@ -399,7 +400,12 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                         child: StreamBuilder<QuerySnapshot>(
                           stream: FirebaseFirestore.instance.collection('foods').snapshots(),
                           builder: (context, snapshot) {
-                            return ListView.builder(
+                            if (!snapshot.hasData) {
+                              return const Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasData && snapshot.data!.docs.isEmpty) {
+                              return const Center(child: Text('no foods found'));
+                            }else {
+                              return ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemCount: reslist,
@@ -437,7 +443,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                             height: 100,
                                             decoration: BoxDecoration(
                                                 image: DecorationImage(
-                                                    image: AssetImage(foodList[index]['img'],),
+                                                    image: CachedNetworkImageProvider(snapshot.data!.docs[index]['image']),
                                                     fit: BoxFit.cover),
                                                 color: Colors.black,
                                                 borderRadius:
@@ -448,7 +454,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                foodList[index]['name'],
+                                                snapshot.data!.docs[index]['name'],
                                                 style: TextStyle(fontSize: scrheight*0.0205),
                                               ),
                                               SizedBox(
@@ -458,7 +464,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
 
                                                 ignoreGestures: true,
                                                 itemSize: 15,
-                                                initialRating: foodList[index]['rating'],
+                                                initialRating: double.parse(snapshot.data!.docs[index]['rating']),
                                                 minRating: 1,
                                                 direction: Axis.horizontal,
                                                 allowHalfRating: true,
@@ -475,7 +481,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                             ],
                                           ),
                                           Text(
-                                            foodList[index]['price'].toString()+"Rs",
+                                            snapshot.data!.docs[index]['price'].toString()+"Rs",
                                             style:
                                             TextStyle(
                                                 fontSize: scrheight*0.0191,
@@ -522,6 +528,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                     ),
                                   );
                                 });
+                            }
                           }
                         ),
                       ),

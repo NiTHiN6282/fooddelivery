@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/snackbar.dart';
@@ -101,7 +102,7 @@ class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
                 height: 300,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                      image: NetworkImage(widget.image,),
+                      image: CachedNetworkImageProvider(widget.image,),
                       fit: BoxFit.cover),
                 ),
               )),

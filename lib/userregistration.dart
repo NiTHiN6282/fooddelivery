@@ -275,7 +275,8 @@ class _UserRegistrationState extends State<UserRegistration> {
                                 'phone': phoneinputcontroller.text,
                                 'email': emailinputcontroller.text,
                                 'date': DateTime.now(),
-                                'status':1
+                                'status':1,
+                                'favorites':[]
                               }).catchError((e) => showsnackbar(
                                   'Registration Failed')))
                                   .then((value) {

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:fooddelivery/foodcartui.dart';
 import 'package:fooddelivery/loginpage.dart';
+import 'package:fooddelivery/wishlist.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'datalist.dart';
@@ -40,7 +41,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
     getList();
     super.initState();
   }
-
+int limit =3;
   @override
   Widget build(BuildContext context) {
     print("userid"+widget.uid);
@@ -381,37 +382,26 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                               "More Foods",
                               style: TextStyle(fontSize: scrheight*0.022),
                             ),
-                            StreamBuilder<QuerySnapshot>(
-                              stream: FirebaseFirestore.instance.collection('foods').snapshots(),
-                              builder: (context, snapshot) {
-                                return TextButton(onPressed: (){
-                                  if(reslist==2){
-                                    setState((){
-                                      reslist=snapshot.data!.docs.length;
-                                    });
-                                  }else{
-                                    setState((){
-                                      reslist=2;
-                                    });
-                                  }
+                        TextButton(onPressed: (){
+                         limit+=3;
+                         setState((){
 
-                                }, child: reslist==2?Text("See more",
-                                  style: TextStyle(
-                                      fontSize: scrheight*0.022,
-                                      color: Color(0xffFFB52E)
-                                  ),):Text("See less",
-                                  style: TextStyle(
-                                      fontSize: scrheight*0.022,
-                                      color: Color(0xffFFB52E)
-                                  ),));
-                              }
-                            )
+                         });
+                        }, child: reslist==2?Text("See more",
+                          style: TextStyle(
+                              fontSize: scrheight*0.022,
+                              color: Color(0xffFFB52E)
+                          ),):Text("See less",
+                          style: TextStyle(
+                              fontSize: scrheight*0.022,
+                              color: Color(0xffFFB52E)
+                          ),))
                           ],
                         ),
                       ),
                       Container(
-                        child: StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance.collection('foods').snapshots(),
+                        child: StreamBuilder<QuerySnapshot<Map<String,dynamic>>>(
+                          stream: FirebaseFirestore.instance.collection('foods').limit(limit).snapshots(),
                           builder: (context, snapshot) {
                             if (!snapshot.hasData) {
                               return const Center(child: CircularProgressIndicator());
@@ -421,118 +411,32 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                               return ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
-                                itemCount: reslist,
+                                itemCount: snapshot.data!.docs.length,
                                 itemBuilder: (context, index) {
-                                  var favicon=false;
-                                  if(checkList!=null){
-                                    for(int i=0; i<checkList.length;i++){
-                                      if(snapshot.data!.docs[index]['foodid']==checkList[i]){
-                                        favicon=true;
-                                      }
-                                    }
-                                  }
-                                  return GestureDetector(
+                                 var product =snapshot.data!.docs[index].data();
+                                 var favicon=false;
+                                 if(checkList!=null){
+                                   for(int i=0; i<checkList.length;i++){
+                                     if(snapshot.data!.docs[index]['foodid']==checkList[i]){
+                                       favicon=true;
+                                     }
+                                   }
+                                 }
+                                return GestureDetector(
                                     onTap: (){
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                             builder: (context) => FoodFavoriteUi(
                                               image: snapshot.data!.docs[index]['image'],
-                                              name: snapshot.data!.docs[index]["name"],
-                                              description: snapshot.data!.docs[index]["description"],
-                                              price: snapshot.data!.docs[index]["price"],
+                                              name: snapshot.data!.docs[index]['name'],
+                                              description: snapshot.data!.docs[index]['description'],
+                                              price: snapshot.data!.docs[index]['price'],
                                               rating: snapshot.data!.docs[index]['rating'],
                                             ),
                                           )).then((value) => setState((){}));
                                     },
-                                    child: Container(
-                                      padding: EdgeInsets.only(bottom: scrheight*0.0147),
-                                      decoration: BoxDecoration(
-                                          borderRadius: BorderRadius.circular(scrheight*0.0293)),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Container(
-                                            width: scrheight*0.1465,
-                                            height: 100,
-                                            decoration: BoxDecoration(
-                                                image: DecorationImage(
-                                                    image: CachedNetworkImageProvider(snapshot.data!.docs[index]['image']),
-                                                    fit: BoxFit.cover),
-                                                color: Colors.black,
-                                                borderRadius:
-                                                    BorderRadius.circular(scrheight*0.022)),
-                                          ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                snapshot.data!.docs[index]['name'],
-                                                style: TextStyle(fontSize: scrheight*0.0205),
-                                              ),
-                                              SizedBox(
-                                                height: 30,
-                                              ),
-                                              RatingBar.builder(
-
-                                                ignoreGestures: true,
-                                                itemSize: 15,
-                                                initialRating: double.parse(snapshot.data!.docs[index]['rating']),
-                                                minRating: 1,
-                                                direction: Axis.horizontal,
-                                                allowHalfRating: true,
-                                                itemCount: 5,
-                                                itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                                                itemBuilder: (context, _) => Icon(
-                                                  Icons.star,
-                                                  color: Colors.amber,
-                                                ),
-                                                onRatingUpdate: (rating) {
-                                                  // print(rating);
-                                                },
-                                              ),
-                                            ],
-                                          ),
-                                          Text(
-                                            snapshot.data!.docs[index]['price'].toString()+"Rs",
-                                            style:
-                                            TextStyle(
-                                                fontSize: scrheight*0.0191,
-                                                color: Colors.black),
-                                          ),
-                                          Container(
-                                            padding: EdgeInsets.only(right: 5),
-                                            child: GestureDetector(
-                                              onTap: (){
-                                                if(favicon==false){
-                                                  favicon=true;
-                                                  checkList.add(snapshot.data!.docs[index]['foodid']);
-                                                  FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
-                                                    "favorites":FieldValue.arrayUnion(checkList),
-                                                  });
-                                                }else{
-                                                  favicon=false;
-                                                  var delvalue=[];
-                                                  delvalue.add(snapshot.data!.docs[index]['foodid']);
-                                                  FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
-                                                    "favorites":FieldValue.arrayRemove(delvalue),
-                                                  });
-                                                }
-
-                                                setState((){});
-                                              },
-                                              child: Icon(
-                                                favicon==false?
-                                                Icons.favorite_border:Icons.favorite,
-                                                color: Colors.red,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                                    child: wishlistCard(product: product,favicon: favicon,checkList: checkList,uid: widget.uid,));
                                 });
                             }
                           }

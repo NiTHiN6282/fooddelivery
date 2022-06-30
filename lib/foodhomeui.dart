@@ -225,7 +225,6 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                   if(checkList!=null){
                                     for(int i=0; i<checkList.length;i++){
                                       if(snapshot.data!.docs[index]['foodid']==checkList[i]){
-                                        // wishList
                                         favicon=true;
                                       }
                                     }
@@ -425,10 +424,11 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                 itemCount: reslist,
                                 itemBuilder: (context, index) {
                                   var favicon=false;
-                                  for(int i=0; i<wishList.length;i++){
-                                    if(wishList[i]['name']==foodList[index]["name"]){
-                                      // wishList
-                                      favicon=true;
+                                  if(checkList!=null){
+                                    for(int i=0; i<checkList.length;i++){
+                                      if(snapshot.data!.docs[index]['foodid']==checkList[i]){
+                                        favicon=true;
+                                      }
                                     }
                                   }
                                   return GestureDetector(
@@ -507,26 +507,18 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                               onTap: (){
                                                 if(favicon==false){
                                                   favicon=true;
-                                                  wishList.add({
-                                                    "img":foodList[index]["img"],
-                                                    "name":foodList[index]["name"],
-                                                    "price":foodList[index]["price"],
-                                                    "description":foodList[index]['description'],
-                                                    "rating":foodList[index]['rating']
+                                                  checkList.add(snapshot.data!.docs[index]['foodid']);
+                                                  FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
+                                                    "favorites":FieldValue.arrayUnion(checkList),
                                                   });
                                                 }else{
                                                   favicon=false;
-                                                  var wishindex;
-                                                  for(int i=0; i<wishList.length;i++){
-                                                    if(wishList[i]['name']==foodList[index]["name"]){
-                                                      // wishList
-                                                      wishindex=i;
-                                                      setState((){});
-                                                    }
-                                                  }
-                                                  wishList.removeAt(wishindex);
+                                                  var delvalue=[];
+                                                  delvalue.add(snapshot.data!.docs[index]['foodid']);
+                                                  FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
+                                                    "favorites":FieldValue.arrayRemove(delvalue),
+                                                  });
                                                 }
-                                                print(wishList);
 
                                                 setState((){});
                                               },

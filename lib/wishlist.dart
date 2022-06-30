@@ -134,6 +134,8 @@ class _WishListPageState extends State<WishListPage> {
                                               child: wishlistCard(
                                                 product: snapshot.data!.data(),
                                                 fromWishlist: true,
+                                                checkList: checkList,
+                                                uid: widget.uid,
                                               ),
                                             );
                                           }
@@ -209,7 +211,18 @@ class _wishlistCardState extends State<wishlistCard> {
                             elevation: 0.0,
                             primary: Colors.white,
                           ),
-                          onPressed: () => Navigator.of(context).pop(true),
+                          onPressed: () {
+                            var delvalue = [];
+                            delvalue.add(widget.product!['foodid']);
+                            FirebaseFirestore.instance
+                                .collection('user')
+                                .doc(widget.uid)
+                                .update({
+                              "favorites": FieldValue.arrayRemove(delvalue),
+                            });
+                            setState(() {});
+                            Navigator.of(context).pop(true);
+                          },
                           child: Text(
                             "DELETE",
                             style: TextStyle(color: Colors.black),
@@ -306,10 +319,20 @@ class _wishlistCardState extends State<wishlistCard> {
                     ),
                     GestureDetector(
                       onTap: () {
+                        var delvalue = [];
+                        delvalue.add(widget.product!['foodid']);
+                        FirebaseFirestore.instance
+                            .collection('user')
+                            .doc(widget.uid)
+                            .update({
+                          "favorites": FieldValue.arrayRemove(delvalue),
+                        });
                         setState(() {});
                       },
                       child: Icon(
-                        Icons.favorite,
+                        widget.favicon == false
+                            ? Icons.favorite_border
+                            : Icons.favorite,
                         color: Colors.red,
                       ),
                     )

@@ -2,13 +2,13 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/authentication/loginpage.dart';
 import 'package:fooddelivery/foodcartui.dart';
-import 'package:fooddelivery/loginpage.dart';
-import 'package:fooddelivery/wishlist.dart';
+import 'package:fooddelivery/widgets/wishlistcard.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'datalist.dart';
-import 'foodfavoriteui.dart';
+import 'fooddetailsui.dart';
 
 class FoodHomeUi extends StatefulWidget {
   var uid;
@@ -257,7 +257,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        FoodFavoriteUi(
+                                                        FoodDetailsUi(
                                                       image: snapshot.data!
                                                           .docs[index]['image'],
                                                       name: snapshot.data!
@@ -547,7 +547,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                         context,
                                                         MaterialPageRoute(
                                                           builder: (context) =>
-                                                              FoodFavoriteUi(
+                                                              FoodDetailsUi(
                                                             image: snapshot
                                                                     .data!
                                                                     .docs[index]
@@ -572,7 +572,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                                                     .then((value) =>
                                                         setState(() {}));
                                               },
-                                              child: wishlistCard(
+                                              child: WishListCard(
                                                 product: product,
                                                 favicon: favicon,
                                                 checkList: checkList,

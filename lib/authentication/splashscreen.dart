@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fooddelivery/authentication/loginpage.dart';
 import 'package:fooddelivery/landingpage.dart';
-import 'package:fooddelivery/loginpage.dart';
 
 var finalEmail;
 

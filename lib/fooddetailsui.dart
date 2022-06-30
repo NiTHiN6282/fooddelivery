@@ -1,19 +1,19 @@
 import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/snackbar.dart';
+import 'package:fooddelivery/widgets/snackbar.dart';
 
 import 'datalist.dart';
 import 'foodcartui.dart';
 
-class FoodFavoriteUi extends StatefulWidget {
+class FoodDetailsUi extends StatefulWidget {
   var name;
   var image;
   var description;
   var price;
   var rating;
 
-  FoodFavoriteUi(
+  FoodDetailsUi(
       {Key? key,
       this.name,
       this.image,
@@ -23,10 +23,10 @@ class FoodFavoriteUi extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<FoodFavoriteUi> createState() => _FoodFavoriteUiState();
+  State<FoodDetailsUi> createState() => _FoodDetailsUiState();
 }
 
-class _FoodFavoriteUiState extends State<FoodFavoriteUi> {
+class _FoodDetailsUiState extends State<FoodDetailsUi> {
   int count = 1;
   var newprice;
   var favicon = false;

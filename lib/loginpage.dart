@@ -3,9 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/userregistration.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import 'foodhomeui.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -15,7 +12,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   bool _isHidden = true;
   final _loginkey = GlobalKey<FormState>();
   TextEditingController emailinputcontroller = TextEditingController();
@@ -28,14 +24,12 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: IconThemeData(
-            color: Colors.grey
-        ),
+        iconTheme: IconThemeData(color: Colors.grey),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: Container(
@@ -45,21 +39,22 @@ class _LoginPageState extends State<LoginPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Image.asset("assets/delivery.png",
-                    height: 200,),
+                  child: Image.asset(
+                    "assets/delivery.png",
+                    height: 200,
+                  ),
                 ),
-                Text("Login",
-                  style: TextStyle(
-                      fontSize: 20
-                  ),),
+                Text(
+                  "Login",
+                  style: TextStyle(fontSize: 20),
+                ),
                 SizedBox(
                   height: 20,
                 ),
                 Form(
-                  key: _loginkey,
+                    key: _loginkey,
                     child: Column(
                       children: [
-
                         Container(
                           child: Row(
                             children: [
@@ -69,7 +64,8 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                               Flexible(
                                 child: TextFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   keyboardType: TextInputType.emailAddress,
                                   controller: emailinputcontroller,
                                   decoration: InputDecoration(
@@ -93,7 +89,6 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -108,25 +103,27 @@ class _LoginPageState extends State<LoginPage> {
                                 child: TextFormField(
                                   controller: passwordinputcontroller,
                                   obscureText: _isHidden,
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   decoration: InputDecoration(
                                     hintText: "Password",
                                     suffix: InkWell(
                                       onTap: _togglePasswordView,
                                       child: Icon(
-                                        _isHidden ? Icons.visibility : Icons.visibility_off,
+                                        _isHidden
+                                            ? Icons.visibility
+                                            : Icons.visibility_off,
                                       ),
                                     ),
                                   ),
                                   validator: (value) {
-                                    RegExp regex =
-                                    RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
+                                    RegExp regex = RegExp(
+                                        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{6,}$');
                                     if (value!.isEmpty) {
                                       return 'Please enter password';
-                                    } else if(value.length<6){
+                                    } else if (value.length < 6) {
                                       return 'Password must contain atleast 6 characters';
-                                    }
-                                    else{
+                                    } else {
                                       if (!regex.hasMatch(value)) {
                                         return 'Enter valid password';
                                       } else {
@@ -139,7 +136,6 @@ class _LoginPageState extends State<LoginPage> {
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -154,25 +150,24 @@ class _LoginPageState extends State<LoginPage> {
                             minimumSize: Size(300, 40), //////// HERE
                           ),
                           onPressed: () async {
-                            if(_loginkey.currentState!.validate()){
+                            if (_loginkey.currentState!.validate()) {
                               FirebaseAuth.instance
                                   .signInWithEmailAndPassword(
-                                  email: emailinputcontroller.text,
-                                  password: passwordinputcontroller.text)
+                                      email: emailinputcontroller.text,
+                                      password: passwordinputcontroller.text)
                                   .then((value) => FirebaseFirestore.instance
-                                  .collection('user')
-                                  .doc(value.user!.uid)
-                                  .get()
-                                  .then((value) {
-                                Navigator.pushReplacement(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            LandingPage(
-                                                uid: value.data()!['uid']
-                                            )
-                                    ));
-                              }))
+                                          .collection('user')
+                                          .doc(value.user!.uid)
+                                          .get()
+                                          .then((value) {
+                                        Navigator.pushReplacement(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    LandingPage(
+                                                        uid: value
+                                                            .data()!['uid'])));
+                                      }))
                                   .catchError(
                                       (e) => showsnackbar('Login failed'));
                               // print(emailinputcontroller.value.text);
@@ -192,28 +187,28 @@ class _LoginPageState extends State<LoginPage> {
                           children: [
                             Text("New User?"),
                             TextButton(
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => UserRegistration(),));
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            UserRegistration(),
+                                      ));
                                 },
-                                child: Text("Register",
-                                  style: TextStyle(
-                                      color: Color(0xff1852b0)
-                                  ),
-                                )
-                            )
+                                child: Text(
+                                  "Register",
+                                  style: TextStyle(color: Color(0xff1852b0)),
+                                ))
                           ],
                         )
                       ],
-                    )
-                )
+                    ))
               ],
             ),
           ),
         ),
       ),
     );
-
-
   }
 
   showsnackbar(String msg) {
@@ -230,5 +225,4 @@ class _LoginPageState extends State<LoginPage> {
       _isHidden = !_isHidden;
     });
   }
-
 }

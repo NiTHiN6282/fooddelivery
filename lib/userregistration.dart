@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/snackbar.dart';
 
 import 'loginpage.dart';
 
@@ -14,7 +13,6 @@ class UserRegistration extends StatefulWidget {
 }
 
 class _UserRegistrationState extends State<UserRegistration> {
-
   var pass;
   var confirmpass;
   final _loginkey = GlobalKey<FormState>();
@@ -22,23 +20,24 @@ class _UserRegistrationState extends State<UserRegistration> {
   TextEditingController nameinputcontroller = TextEditingController();
   TextEditingController phoneinputcontroller = TextEditingController();
   TextEditingController passwordinputcontroller = TextEditingController();
-  TextEditingController confirmpasswordinputcontroller = TextEditingController();
+  TextEditingController confirmpasswordinputcontroller =
+      TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     TextStyle defaultStyle = TextStyle(color: Colors.black54, fontSize: 15.0);
-    TextStyle linkStyle = TextStyle(color: Color(0xff1852b0),);
+    TextStyle linkStyle = TextStyle(
+      color: Color(0xff1852b0),
+    );
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        iconTheme: IconThemeData(
-            color: Colors.grey
-        ),
+        iconTheme: IconThemeData(color: Colors.grey),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: GestureDetector(
-        onTap: (){
+        onTap: () {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: Container(
@@ -48,13 +47,15 @@ class _UserRegistrationState extends State<UserRegistration> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Center(
-                  child: Image.asset("assets/delivery.png",
-                    height: 200,),
+                  child: Image.asset(
+                    "assets/delivery.png",
+                    height: 200,
+                  ),
                 ),
-                Text("Sign Up",
-                  style: TextStyle(
-                      fontSize: 20
-                  ),),
+                Text(
+                  "Sign Up",
+                  style: TextStyle(fontSize: 20),
+                ),
                 SizedBox(
                   height: 20,
                 ),
@@ -62,7 +63,6 @@ class _UserRegistrationState extends State<UserRegistration> {
                     key: _loginkey,
                     child: Column(
                       children: [
-
                         Container(
                           child: Row(
                             children: [
@@ -72,7 +72,8 @@ class _UserRegistrationState extends State<UserRegistration> {
                               ),
                               Flexible(
                                 child: TextFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   keyboardType: TextInputType.emailAddress,
                                   controller: emailinputcontroller,
                                   decoration: InputDecoration(
@@ -108,13 +109,15 @@ class _UserRegistrationState extends State<UserRegistration> {
                               ),
                               Flexible(
                                 child: TextFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   controller: nameinputcontroller,
                                   decoration: InputDecoration(
                                     hintText: "Full Name",
                                   ),
                                   validator: (value) {
-                                    if (value!.length < 3) return 'Invalid Name';
+                                    if (value!.length < 3)
+                                      return 'Invalid Name';
                                     return null;
                                   },
                                 ),
@@ -122,7 +125,6 @@ class _UserRegistrationState extends State<UserRegistration> {
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -136,11 +138,11 @@ class _UserRegistrationState extends State<UserRegistration> {
                               Flexible(
                                 child: TextFormField(
                                   maxLength: 10,
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   keyboardType: TextInputType.phone,
                                   controller: phoneinputcontroller,
                                   decoration: InputDecoration(
-
                                     hintText: "Mobile",
                                   ),
                                   validator: (value) {
@@ -154,7 +156,6 @@ class _UserRegistrationState extends State<UserRegistration> {
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -167,13 +168,14 @@ class _UserRegistrationState extends State<UserRegistration> {
                               ),
                               Flexible(
                                 child: TextFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   controller: passwordinputcontroller,
                                   decoration: InputDecoration(
                                     hintText: "Password",
                                   ),
                                   validator: (value) {
-                                    pass=value;
+                                    pass = value;
                                     if (value!.length < 6) {
                                       return 'Password must be at least 6 characters long';
                                     } else {
@@ -185,7 +187,6 @@ class _UserRegistrationState extends State<UserRegistration> {
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -198,18 +199,19 @@ class _UserRegistrationState extends State<UserRegistration> {
                               ),
                               Flexible(
                                 child: TextFormField(
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   controller: confirmpasswordinputcontroller,
                                   decoration: InputDecoration(
                                     hintText: "Confirm Password",
                                   ),
                                   validator: (value) {
-                                    confirmpass=value;
+                                    confirmpass = value;
                                     if (value!.length < 6) {
                                       return 'Password must be at least 6 characters long';
-                                    } else if (pass!=confirmpass) {
+                                    } else if (pass != confirmpass) {
                                       return 'not match';
-                                    }else {
+                                    } else {
                                       return null;
                                     }
                                   },
@@ -218,7 +220,6 @@ class _UserRegistrationState extends State<UserRegistration> {
                             ],
                           ),
                         ),
-
                         SizedBox(
                           height: 20,
                         ),
@@ -226,7 +227,8 @@ class _UserRegistrationState extends State<UserRegistration> {
                           text: TextSpan(
                             style: defaultStyle,
                             children: <TextSpan>[
-                              TextSpan(text: "By signing up, you're agree to our "),
+                              TextSpan(
+                                  text: "By signing up, you're agree to our "),
                               TextSpan(
                                   text: 'Terms of Service',
                                   style: linkStyle,
@@ -255,35 +257,34 @@ class _UserRegistrationState extends State<UserRegistration> {
                             shadowColor: Colors.greenAccent,
                             elevation: 3,
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(32.0)
-                            ),
+                                borderRadius: BorderRadius.circular(32.0)),
                             minimumSize: Size(300, 40), //////// HERE
                           ),
                           onPressed: () {
                             FocusManager.instance.primaryFocus?.unfocus();
-                            if(_loginkey.currentState!.validate()){
+                            if (_loginkey.currentState!.validate()) {
                               FirebaseAuth.instance
                                   .createUserWithEmailAndPassword(
-                                  email: emailinputcontroller.text,
-                                  password: passwordinputcontroller.text)
+                                      email: emailinputcontroller.text,
+                                      password: passwordinputcontroller.text)
                                   .then((value) => FirebaseFirestore.instance
-                                  .collection('user')
-                                  .doc(value.user!.uid)
-                                  .set({
-                                'uid': value.user!.uid,
-                                'name': nameinputcontroller.text,
-                                'phone': phoneinputcontroller.text,
-                                'email': emailinputcontroller.text,
-                                'date': DateTime.now(),
-                                'status':1,
-                                'favorites':[]
-                              }).catchError((e) => showsnackbar(
-                                  'Registration Failed')))
+                                          .collection('user')
+                                          .doc(value.user!.uid)
+                                          .set({
+                                        'uid': value.user!.uid,
+                                        'name': nameinputcontroller.text,
+                                        'phone': phoneinputcontroller.text,
+                                        'email': emailinputcontroller.text,
+                                        'date': DateTime.now(),
+                                        'status': 1,
+                                        'favorites': []
+                                      }).catchError((e) => showsnackbar(
+                                              'Registration Failed')))
                                   .then((value) {
                                 showsnackbar('Registered successfully');
                                 Navigator.pop(context);
-                              }).catchError(
-                                      (e) => showsnackbar('Registration failed'));
+                              }).catchError((e) =>
+                                      showsnackbar('Registration failed'));
                             }
                           },
                           child: Text('Sign Up'),
@@ -293,17 +294,17 @@ class _UserRegistrationState extends State<UserRegistration> {
                           children: [
                             Text("Joined us before?"),
                             TextButton(
-                                onPressed: (){
-                                  Navigator.push(context, MaterialPageRoute(
-                                    builder: (context) => LoginPage(),)
-                                  );
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => LoginPage(),
+                                      ));
                                 },
-                                child: Text("Login",
-                                  style: TextStyle(
-                                      color: Color(0xff1852b0)
-                                  ),
-                                )
-                            )
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(color: Color(0xff1852b0)),
+                                ))
                           ],
                         )
                       ],
@@ -324,5 +325,4 @@ class _UserRegistrationState extends State<UserRegistration> {
 
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
-
 }

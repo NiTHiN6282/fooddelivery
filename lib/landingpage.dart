@@ -1,12 +1,11 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/wishlist.dart';
 
 class LandingPage extends StatefulWidget {
   dynamic uid;
-  LandingPage({Key? key,
-    required this.uid}) : super(key: key);
+
+  LandingPage({Key? key, required this.uid}) : super(key: key);
 
   @override
   State<LandingPage> createState() => _LandingPageState();
@@ -16,29 +15,26 @@ class _LandingPageState extends State<LandingPage> {
   int _selectedIndex = 0;
 
   static const TextStyle optionStyle =
-  TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
 
   dynamic _widgetOptions;
 
-  void setData(){
+  void setData() {
     _widgetOptions = <Widget>[
       FoodHomeUi(
         uid: widget.uid,
       ),
       WishListPage(
-        uid:widget.uid,
+        uid: widget.uid,
       )
     ];
   }
-
-
 
   @override
   void initState() {
     setData();
     super.initState();
   }
-
 
   void _onItemTapped(int index) {
     setState(() {
@@ -51,10 +47,8 @@ class _LandingPageState extends State<LandingPage> {
     return Scaffold(
       body: SafeArea(
           child: Center(
-            child: _widgetOptions.elementAt(_selectedIndex),
-          )
-      ),
-
+        child: _widgetOptions.elementAt(_selectedIndex),
+      )),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

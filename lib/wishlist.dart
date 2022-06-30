@@ -108,18 +108,28 @@ class _WishListPageState extends State<WishListPage> {
                                                     Text('No product found'));
                                           } else {
                                             return GestureDetector(
-                                              onTap: (){
+                                              onTap: () {
                                                 Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) => FoodFavoriteUi(
-                                                        image: snapshot.data!['image'],
-                                                        name: snapshot.data!['name'],
-                                                        description: snapshot.data!['description'],
-                                                        price: snapshot.data!['price'],
-                                                        rating: snapshot.data!['rating'],
-                                                      ),
-                                                    )).then((value) => setState((){}));
+                                                        context,
+                                                        MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              FoodFavoriteUi(
+                                                            image: snapshot
+                                                                .data!['image'],
+                                                            name: snapshot
+                                                                .data!['name'],
+                                                            description: snapshot
+                                                                    .data![
+                                                                'description'],
+                                                            price: snapshot
+                                                                .data!['price'],
+                                                            rating:
+                                                                snapshot.data![
+                                                                    'rating'],
+                                                          ),
+                                                        ))
+                                                    .then((value) =>
+                                                        setState(() {}));
                                               },
                                               child: wishlistCard(
                                                 product: snapshot.data!.data(),
@@ -148,8 +158,13 @@ class wishlistCard extends StatefulWidget {
   var checkList;
   var uid;
 
-   wishlistCard(
-      {Key? key, required this.product, this.fromWishlist = false, this.favicon,this.checkList,this.uid})
+  wishlistCard(
+      {Key? key,
+      required this.product,
+      this.fromWishlist = false,
+      this.favicon,
+      this.checkList,
+      this.uid})
       : super(key: key);
 
   @override
@@ -303,7 +318,7 @@ class _wishlistCardState extends State<wishlistCard> {
               ),
             )
           : Container(
-              padding: EdgeInsets.only(bottom: scrheight * 0.0147,right: 10),
+              padding: EdgeInsets.only(bottom: scrheight * 0.0147, right: 10),
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(scrheight * 0.0293)),
               child: Row(
@@ -336,8 +351,7 @@ class _wishlistCardState extends State<wishlistCard> {
                           RatingBar.builder(
                             ignoreGestures: true,
                             itemSize: 15,
-                            initialRating:
-                                widget.product!['rating'].toDouble(),
+                            initialRating: widget.product!['rating'].toDouble(),
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
@@ -366,25 +380,32 @@ class _wishlistCardState extends State<wishlistCard> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      if(widget.favicon==false){
-                        widget.favicon=true;
+                      if (widget.favicon == false) {
+                        widget.favicon = true;
                         widget.checkList.add(widget.product!['foodid']);
-                        FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
-                          "favorites":FieldValue.arrayUnion(widget.checkList),
+                        FirebaseFirestore.instance
+                            .collection('user')
+                            .doc(widget.uid)
+                            .update({
+                          "favorites": FieldValue.arrayUnion(widget.checkList),
                         });
-                      }else{
-                        widget.favicon=false;
-                        var delvalue=[];
+                      } else {
+                        widget.favicon = false;
+                        var delvalue = [];
                         delvalue.add(widget.product!['foodid']);
-                        FirebaseFirestore.instance.collection('user').doc(widget.uid).update({
-                          "favorites":FieldValue.arrayRemove(delvalue),
+                        FirebaseFirestore.instance
+                            .collection('user')
+                            .doc(widget.uid)
+                            .update({
+                          "favorites": FieldValue.arrayRemove(delvalue),
                         });
                       }
                       setState(() {});
                     },
                     child: Icon(
-                      widget.favicon==false?
-                      Icons.favorite_border:Icons.favorite,
+                      widget.favicon == false
+                          ? Icons.favorite_border
+                          : Icons.favorite,
                       color: Colors.red,
                     ),
                   )

@@ -1,12 +1,8 @@
-import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/foodhomeui.dart';
 import 'package:fooddelivery/landingpage.dart';
 import 'package:fooddelivery/loginpage.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 var finalEmail;
 
@@ -18,7 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-
   // @override
   // void initState(){
   //   getValidationData().whenComplete(() async {
@@ -44,13 +39,11 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    firebaseCall(){
-      FirebaseAuth.instance
-          .authStateChanges()
-          .listen((User? user) {
+    firebaseCall() {
+      FirebaseAuth.instance.authStateChanges().listen((User? user) {
         if (user == null) {
-          Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) =>  LoginPage()));
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (context) => LoginPage()));
         } else {
           FirebaseFirestore.instance
               .collection('user')
@@ -63,21 +56,22 @@ class _SplashScreenState extends State<SplashScreen> {
                   context,
                   MaterialPageRoute(
                       builder: (context) => LandingPage(
-                        uid: value.data()!['uid'],
-                      )));
+                            uid: value.data()!['uid'],
+                          )));
             }
           });
         }
       });
-    };
+    }
+
+    ;
     firebaseCall();
     return Scaffold(
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset("assets/splashimg.gif",
-            width: 100),
+            Image.asset("assets/splashimg.gif", width: 100),
             SizedBox(
               height: 30,
             ),

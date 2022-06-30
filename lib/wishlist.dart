@@ -38,8 +38,6 @@ class _WishListPageState extends State<WishListPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final items = List<String>.generate(checkList.length+1, (i) => '${i + 1}');
-    var scrheight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: SafeArea(
         child: Container(

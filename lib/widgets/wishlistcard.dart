@@ -122,9 +122,6 @@ class _WishListCardState extends State<WishListCard> {
                           borderRadius:
                               BorderRadius.circular(scrheight * 0.022)),
                     ),
-                    // SizedBox(
-                    //   width: scrheight*0.022,
-                    // ),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

@@ -14,29 +14,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // @override
-  // void initState(){
-  //   getValidationData().whenComplete(() async {
-  //     Timer(Duration(seconds: 2), () {
-  //       if(finalEmail==null){
-  //         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginPage(),));
-  //       }else{
-  //         Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LandingPage(),));
-  //       }
-  //     });
-  //
-  //   });
-  // }
-
-  // Future getValidationData() async{
-  //   final SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-  //   var obtainedEmail=sharedPreferences.getString('email');
-  //   setState((){
-  //     finalEmail=obtainedEmail;
-  //   });
-  //   print(finalEmail);
-  // }
-
   @override
   Widget build(BuildContext context) {
     firebaseCall() {

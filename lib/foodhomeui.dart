@@ -511,6 +511,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
                             StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                                 stream: FirebaseFirestore.instance
                                     .collection('foods')
+                                    .orderBy('name')
                                     .limit(limit)
                                     .snapshots(),
                                 builder: (context, snapshot) {

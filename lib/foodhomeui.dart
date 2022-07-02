@@ -2,10 +2,9 @@ import 'package:badges/badges.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fooddelivery/authentication/loginpage.dart';
 import 'package:fooddelivery/foodcartui.dart';
+import 'package:fooddelivery/widgets/drawer.dart';
 import 'package:fooddelivery/widgets/wishlistcard.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'datalist.dart';
 import 'fooddetailsui.dart';
@@ -59,62 +58,7 @@ class _FoodHomeUiState extends State<FoodHomeUi> {
       },
       child: Scaffold(
         drawer: Drawer(
-          child: ListView(
-            children: [
-              DrawerHeader(
-                  decoration: BoxDecoration(color: Colors.blue),
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 30,
-                              child: Image.asset(personalDetails['img']),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              personalDetails['name'],
-                              style: TextStyle(fontSize: 18),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              personalDetails['email'],
-                              style: TextStyle(fontSize: 13),
-                            )
-                          ],
-                        ),
-                        InkWell(
-                            onTap: () {
-                              Navigator.pop(context);
-                            },
-                            child: Icon(Icons.cancel_outlined))
-                      ],
-                    ),
-                  )),
-              ListTile(
-                onTap: () async {
-                  final SharedPreferences sharedPreferences =
-                      await SharedPreferences.getInstance();
-                  sharedPreferences.remove('email');
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => LoginPage(),
-                      ));
-                },
-                leading: Icon(Icons.logout),
-                title: Text("Logout"),
-              )
-            ],
-          ),
+          child: DrawerWidget(),
         ),
         backgroundColor: Colors.white,
         appBar: AppBar(
